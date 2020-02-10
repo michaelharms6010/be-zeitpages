@@ -8,7 +8,7 @@ exports.up = function(knex) {
     .unique();
 
     users.string("password", 64);
-    users.string("zaddr", 128);
+    users.string("zaddr", 128).unique();
     users.string("proofposturl", 255);
     users.string("website", 255);
     users.string("twitter", 255);
