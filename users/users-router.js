@@ -19,7 +19,7 @@ router.put('/', restricted, (req,res) => {
     const {zaddr} = req.body;
     const id = req.decodedJwt.id;
     console.log(id)
-   
+    console.log(zaddr)
 
     var schema = new validator();
 
@@ -31,11 +31,12 @@ router.put('/', restricted, (req,res) => {
             firstTwo = zaddr.split("").slice(0,2).join("");
         }
         console.log(firstTwo)
-
-    if (zaddr && firstTwo!=="zs" || !schema.validate(zaddr)){
-        res.status(500).json({
-        message: 'Your zaddr is invalid.'
-        })
+    if(zaddr){
+        if (firstTwo!=="zs" || !schema.validate(zaddr)){
+            res.status(500).json({
+            message: 'Your zaddr is invalid.'
+            })
+        }
     }
     
     if (req.body.password) {
