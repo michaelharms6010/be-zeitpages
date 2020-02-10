@@ -15,40 +15,41 @@ router.get("/:id", (req,res) => {
     })
 })
 
-router.put('/:id', restricted, (req,res) => {
-    if (Number(req.params.id) !== Number(req.decodedJwt.id)) {
-        res.status(401).json({message: 'You cannot edit another user'})
-    } 
-    else {
+router.put('/', restricted, (req,res) => {
+    const {zaddr} = req.body;
+    const id = req.decodedJwt.id;
+    console.log(id)
+   
 
-//       var schema = new validator();
+    var schema = new validator();
 
-//   schema
-//     .is().min(78)                                    
-//     .is().max(78)                                  
-//     let firstTwo = "";      
-//     if (user.zaddr) {
-//         firstTwo = user.zaddr.split("").slice(0,2).join("");
-//     }
-//     console.log(firstTwo)
+    schema
+        .is().min(78)                                    
+        .is().max(78)                                  
+        let firstTwo = "";      
+        if (zaddr) {
+            firstTwo = zaddr.split("").slice(0,2).join("");
+        }
+        console.log(firstTwo)
 
-//    if ( !firstTwo==="zs" && !schema.validate (user.zaddr )){
-//      res.status(500).json({
-//        message: 'Your zaddr is invalid.'
-//      })
-   } 
-   if (req.body.password) {
-       delete req.body.password
-   }
-    Users.updateUser(req.params.id, req.body)
-    .then( _ => Users.findById(req.params.id)).then(user => {
+    if ( firstTwo!=="zs" || !schema.validate(zaddr)){
+        res.status(500).json({
+        message: 'Your zaddr is invalid.'
+        })
+    }
+    
+    if (req.body.password) {
+        delete req.body.password
+    }
+    Users.updateUser(id, req.body)
+    .then( _ => Users.findById(id)).then(user => {
         delete user.password;
         res.status(200).json(user);
     })
     .catch(err => {
         res.status(500).json({message: 'Unable to update', error: err})
     })}
-    
+
 )
 
 router.delete('/:id', restricted, (req, res) => {
