@@ -53,12 +53,9 @@ router.put('/', restricted, (req,res) => {
 
 )
 
-router.delete('/:id', restricted, (req, res) => {
-    // if (Number(req.params.id) !== Number(req.decodedJwt.id)) {
-    //     res.status(401).json({message: 'You cannot access another user'})
-    // } 
-    // else {
-        Users.remove(req.params.id)
+router.delete('/', restricted, (req, res) => {
+
+        Users.remove(req.decodedJwt.id)
         .then(user => {
             if (!user) {
                 res.status(404).json({message: "No user exists by that ID!"})
@@ -70,7 +67,7 @@ router.delete('/:id', restricted, (req, res) => {
             console.log(err)
             res.status(500).json(err)
         })
-    // }
+
 })
   
 
