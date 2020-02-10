@@ -32,7 +32,7 @@ router.put('/', restricted, (req,res) => {
         }
         console.log(firstTwo)
 
-    if ( firstTwo!=="zs" || !schema.validate(zaddr)){
+    if (zaddr && firstTwo!=="zs" || !schema.validate(zaddr)){
         res.status(500).json({
         message: 'Your zaddr is invalid.'
         })
