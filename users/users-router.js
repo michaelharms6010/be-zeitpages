@@ -8,8 +8,8 @@ router.get("/", (req,res) => {
     res.status(201).json(users))
 })
 
-router.get("/:id", (req,res) => {
-    Users.findById(req.params.id).then(user => {
+router.get("/me", restricted, (req,res) => {
+    Users.findById(req.decodedJwt.id).then(user => {
         delete user.password;
         res.status(201).json(user)
     })
