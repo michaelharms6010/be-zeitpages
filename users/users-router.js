@@ -36,6 +36,7 @@ router.put('/', restricted, (req,res) => {
             res.status(500).json({
             message: 'Your zaddr is invalid.'
             })
+            return;
         }
     }
     
