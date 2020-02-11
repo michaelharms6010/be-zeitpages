@@ -70,6 +70,25 @@ router.delete('/', restricted, (req, res) => {
         })
 
 })
+
+router.delete('/:id', restricted, (req, res) => {
+    if (req.decodedJwt.id === 9) {
+        Users.remove(req.params.id)
+        .then(user => {
+            if (!user) {
+                res.status(404).json({message: "No user exists by that ID!"})
+            } else {
+                res.status(200).json({message: "deleted"})
+            }
+        })
+        .catch(err => {
+            console.log(err)
+            res.status(500).json(err)
+        })
+    } else {
+        res.status(500).json({bro: "cmon now"})
+    }
+})
   
 
 module.exports = router;
