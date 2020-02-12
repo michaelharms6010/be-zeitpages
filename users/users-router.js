@@ -16,10 +16,18 @@ router.get("/me", restricted, (req,res) => {
 })
 
 router.put('/', restricted, (req,res) => {
-    const {zaddr} = req.body;
+    let {zaddr, twitter, website} = req.body;
     const id = req.decodedJwt.id;
-    console.log(id)
-    console.log(zaddr)
+
+    if (!website.includes("https://") && !website.includes("http://")) {
+        website = `https://${website}`
+    } 
+    
+    twitter = twitter.replace("https://", "")
+    twitter = twitter.replace("www.", "")
+    twitter = twitter.replace("twitter.com/", "")
+    twitter = twitter.replace("http://", "")
+    twitter = twitter.replace("@", "")
 
     var schema = new validator();
 
