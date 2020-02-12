@@ -15,7 +15,7 @@ exports.up = function(knex) {
     users.string("website", 255);
     users.string("twitter", 255);
     users.string("email", 255);
-    users.integer("modified");
+    // users.integer("modified");
   })
 };
 
