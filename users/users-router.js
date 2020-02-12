@@ -27,7 +27,7 @@ router.put('/', restricted, (req,res) => {
         req.body.twitter = twitter.replace("https://", "").replace("www.", "").replace("twitter.com/", "").replace("http://", "").replace("@", "")
     }
     var schema = new validator();
-
+    req.body.modified = Date.now();
     schema
         .is().min(78)                                    
         .is().max(78)                                  
