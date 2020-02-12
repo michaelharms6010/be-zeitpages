@@ -24,7 +24,7 @@ router.put('/', restricted, (req,res) => {
         } 
     }
     if (twitter){
-        twitter = twitter.replace("https://", "").replace("www.", "").replace("twitter.com/", "").replace("http://", "").replace("@", "")
+        req.body.twitter = twitter.replace("https://", "").replace("www.", "").replace("twitter.com/", "").replace("http://", "").replace("@", "")
     }
     var schema = new validator();
 
