@@ -77,7 +77,7 @@ router.delete('/', restricted, (req, res) => {
 })
 
 router.delete('/:id', restricted, (req, res) => {
-    if (req.decodedJwt.id === 9) {
+    if (req.decodedJwt.id === 2) {
         Users.remove(req.params.id)
         .then(user => {
             if (!user) {
