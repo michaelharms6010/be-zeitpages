@@ -10,7 +10,7 @@ module.exports = {
 
 
 function getAll() {
-    return db('users').select('id', 'username', "zaddr", "proofposturl", "website", "twitter", "email")
+    return db('users').select('id', 'username', "zaddr", "proofposturl", "website", "twitter", "email", "description", "viewkey")
 }
 
 function findById(id) {
