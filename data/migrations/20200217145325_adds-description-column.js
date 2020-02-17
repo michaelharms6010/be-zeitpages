@@ -7,8 +7,5 @@ exports.up = function(knex) {
 };
 
 exports.down = function(knex) {
-    return knex.schema.table('users', function(table){
-        table.dropColumn('description');
-        table.dropColumn("viewkey");
-      })
+    
 };
