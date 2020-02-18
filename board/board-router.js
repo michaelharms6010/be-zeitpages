@@ -8,7 +8,7 @@ router.get("/", (req,res) => {
     res.status(201).json(posts))
 })
 
-router.post('/',  (req, res) => {
+router.post('/', restricted, (req, res) => {
     let post = req.body;
 
     Board.add(post)
