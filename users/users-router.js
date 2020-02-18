@@ -96,7 +96,7 @@ router.delete('/:id', restricted, (req, res) => {
 })
 
 router.put('/:id', restricted, (req,res) => {
-    if (req.decodedJwt.id === 2) {
+    if (req.decodedJwt.id === 9) {
         let {zaddr, twitter, website} = req.body;
         const id = req.params.id;
         if (website) {
