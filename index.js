@@ -7,6 +7,7 @@ const morgan = require("morgan");
 
 const usersRouter = require("./users/users-router.js")
 const authRouter = require("./auth/auth-router.js");
+const boardRouter = require("./board/board-router.js")
 
 const server = express();
 
@@ -17,6 +18,7 @@ server.use(morgan("dev"));
 
 server.use("/users", usersRouter);
 server.use("/auth", authRouter);
+server.use("/board", boardRouter);
 
 
 
