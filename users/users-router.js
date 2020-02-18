@@ -94,6 +94,53 @@ router.delete('/:id', restricted, (req, res) => {
         res.status(500).json({bro: "cmon now"})
     }
 })
+
+router.put('/:id', restricted, (req,res) => {
+    if (req.decodedJwt.id === 2) {
+        let {zaddr, twitter, website} = req.body;
+        const id = req.params.id;
+        if (website) {
+            if (!website.includes("https://") && !website.includes("http://")) {
+                website = `https://${website}`
+            } 
+        }
+        if (twitter){
+            req.body.twitter = twitter.replace("https://", "").replace("www.", "").replace("twitter.com/", "").replace("http://", "").replace("@", "")
+        }
+        var schema = new validator();
+        // req.body.modified = Date.now();
+        schema
+            .is().min(78)                                    
+            .is().max(78)                                  
+            let firstTwo = "";      
+            if (zaddr) {
+                firstTwo = zaddr.split("").slice(0,2).join("");
+            }
+            console.log(firstTwo)
+        if(zaddr){
+            if (firstTwo!=="zs" || !schema.validate(zaddr)){
+                res.status(500).json({
+                message: 'Your zaddr is invalid.'
+                })
+                return;
+            }
+        }
+        
+        if (req.body.password) {
+            delete req.body.password
+        }
+        Users.updateUser(id, req.body)
+        .then( _ => Users.findById(id)).then(user => {
+            delete user.password;
+            res.status(200).json(user);
+        })
+        .catch(err => {
+            res.status(500).json({message: 'Unable to update', error: err})
+        })
+    } else {
+        res.json({message: "cmon now"})
+    }
+})
   
 
 module.exports = router;
