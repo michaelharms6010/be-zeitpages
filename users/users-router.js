@@ -140,9 +140,7 @@ router.put('/:id', restricted, (req,res) => {
     } else {
         res.json({message: "cmon now"})
     }
-    } 
-
-)
+})
   
 
 module.exports = router;
