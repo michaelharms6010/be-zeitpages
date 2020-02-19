@@ -29,9 +29,9 @@ router.post('/', restricted, (req, res) => {
 
 router.delete('/:id', restricted, (req, res) => {
     if (req.decodedJwt.id === 2) {
-        Users.remove(req.params.id)
-        .then(user => {
-            if (!user) {
+        Board.remove(req.params.id)
+        .then(post => {
+            if (!post) {
                 res.status(404).json({message: "No post exists by that ID!"})
             } else {
                 res.status(200).json({message: "board post deleted"})
