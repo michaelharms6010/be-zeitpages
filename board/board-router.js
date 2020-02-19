@@ -9,17 +9,21 @@ router.get("/", (req,res) => {
 })
 
 router.post('/', restricted, (req, res) => {
-    let post = req.body;
+    if (req.decodedJwt.id === 2) {
+        let post = req.body;
 
-    Board.add(post)
-      .then(saved => {
-        const newPost = saved[0]
-        res.status(201).json(newPost)
-      })
-      .catch(err => {
-        res.status(500).json(err)
-        console.log(err, 'err')
-      })
+        Board.add(post)
+        .then(saved => {
+            const newPost = saved[0]
+            res.status(201).json(newPost)
+        })
+        .catch(err => {
+            res.status(500).json(err)
+            console.log(err, 'err')
+        })
+    } else {
+        res.status(500).json({bro: "cmon now"})
+    }
   });
 
 
