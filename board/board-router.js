@@ -22,7 +22,7 @@ router.post('/', restricted, (req, res) => {
             console.log(err, 'err')
         })
     } else {
-        res.status(500).json({bro: "cmon now"})
+        res.status(500).json({bro: "cmon now", id: req.decodedJwt.id})
     }
   });
 
