@@ -4,7 +4,6 @@ exports.up = function(knex) {
       posts.increments();
       posts.string("memo", 512)
       .notNullable()
-      .unique();
       posts.string("datetime", 64)
       .notNullable();
       posts.integer("amount")
