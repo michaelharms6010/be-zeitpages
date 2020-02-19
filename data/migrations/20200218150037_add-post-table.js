@@ -8,7 +8,6 @@ exports.up = function(knex) {
       .notNullable();
       posts.integer("amount")
       .notNullable();
-
     })
   };
   
