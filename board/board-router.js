@@ -11,11 +11,6 @@ var pusher = new Pusher({
 });
 
 router.get("/", (req,res) => {
-    
-    pusher.trigger('my-channel', 'my-event', {
-        "message": "hello world"
-    });
-
     Board.getAll().then(posts =>
     res.status(201).json(posts))
 })
@@ -27,6 +22,9 @@ router.post('/', restricted, (req, res) => {
         Board.add(post)
         .then(saved => {
             const newPost = saved[0]
+            pusher.trigger('board', 'new-post', {
+                "message": "new post"
+            });
             res.status(201).json(newPost)
         })
         .catch(err => {
