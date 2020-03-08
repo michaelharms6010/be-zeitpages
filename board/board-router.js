@@ -1,9 +1,21 @@
 const router = require('express').Router();
 const Board = require('./board-model');
 const restricted = require("../auth/restricted-middleware");
-
+var Pusher = require('pusher');
+var pusher = new Pusher({
+    appId: process.env.PUSHER_APPID,
+    key: process.env.PUSHER_KEY,
+    secret: process.env.PUSHER_SECRET,
+    cluster: 'us2',
+    encrypted: true
+});
 
 router.get("/", (req,res) => {
+    
+    pusher.trigger('my-channel', 'my-event', {
+        "message": "hello world"
+    });
+
     Board.getAll().then(posts =>
     res.status(201).json(posts))
 })
