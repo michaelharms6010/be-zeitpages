@@ -14,7 +14,7 @@ function getAll() {
 }
 
 function getPage(page) {
-    return db('board_posts').limit(25).offset(25 * (page-1)).returning("*")
+    return db('board_posts').orderBy('id', 'desc').limit(25).offset(25 * (page-1)).returning("*")
 }
 
 async function add(post) {
