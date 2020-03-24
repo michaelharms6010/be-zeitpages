@@ -16,7 +16,7 @@ router.get("/", (req,res) => {
 })
 
 router.get("/:id", (req,res) => {
-    const {id} = Number(req.params.id);
+    const id = Number(req.params.id);
     Board.getPage(id).then(posts =>
     res.status(200).json(posts))
 })
