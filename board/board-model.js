@@ -5,9 +5,13 @@ module.exports = {
     getAll,
     getPage,
     remove,
-    add
+    add,
+    getCount
 }
 
+function getCount() {
+    return db('board_posts').count("id as CNT")
+}
 
 function getAll() {
     return db('board_posts').returning("*")

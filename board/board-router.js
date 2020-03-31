@@ -13,6 +13,13 @@ var pusher = new Pusher({
 router.get("/", (req,res) => {
     Board.getAll().then(posts =>
     res.status(200).json(posts))
+    .catch(err => console.log(err.response))
+})
+
+router.get("/count", (req,res) => {
+    Board.getCount().then(count =>
+        res.status(200).json(count[0].CNT))
+    .catch(err => console.log(err.response))
 })
 
 router.get("/:id", (req,res) => {
