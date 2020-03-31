@@ -13,12 +13,29 @@ var pusher = new Pusher({
 router.get("/", (req,res) => {
     Board.getAll().then(posts =>
     res.status(200).json(posts))
+    .catch(err => res.status(500).json(err))
+})
+
+router.get("/count", (req,res) => {
+    Board.getCount().then(count =>
+        res.status(200).json(count[0].CNT))
+    .catch(err => res.status(500).json(err))
 })
 
 router.get("/:id", (req,res) => {
     const id = Number(req.params.id);
     Board.getPage(id).then(posts =>
-    res.status(200).json(posts))
+        res.status(200).json(posts)
+    )
+    .catch(err => res.status(500).json(err))
+})
+
+router.get("/post/:id", (req, res) => {
+    const id = req.params.id;
+    Board.findById(id).then(post => {
+        res.status(200).json(post)
+    })
+    .catch(err => console.log(err.response))
 })
 
 router.post('/', restricted, (req, res) => {

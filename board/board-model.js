@@ -5,9 +5,20 @@ module.exports = {
     getAll,
     getPage,
     remove,
-    add
+    add,
+    getCount,
+    findById
 }
 
+function getCount() {
+    return db('board_posts').count("id as CNT")
+}
+
+function findById(id) {
+    return db('board_posts')
+        .where({id})
+        .first()
+}
 
 function getAll() {
     return db('board_posts').returning("*")
