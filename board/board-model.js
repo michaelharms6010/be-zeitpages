@@ -6,11 +6,18 @@ module.exports = {
     getPage,
     remove,
     add,
-    getCount
+    getCount,
+    findById
 }
 
 function getCount() {
     return db('board_posts').count("id as CNT")
+}
+
+function findById(id) {
+    return db('board_posts')
+        .where({id})
+        .first()
 }
 
 function getAll() {
