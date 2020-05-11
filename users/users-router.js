@@ -46,7 +46,10 @@ router.put('/', restricted, (req,res) => {
     }
     
     if (req.body.password) {
-        delete req.body.password
+        delete req.body.password;
+    }
+    if (req.body.id) {
+        delete req.body.id;
     }
     Users.updateUser(id, req.body)
     .then( _ => Users.findById(id)).then(user => {
