@@ -1,11 +1,41 @@
 const router = require('express').Router();
 const Board = require('./board-model');
 const restricted = require("../auth/restricted-middleware");
-
+var Pusher = require('pusher');
+var pusher = new Pusher({
+    appId: process.env.PUSHER_APPID,
+    key: process.env.PUSHER_KEY,
+    secret: process.env.PUSHER_SECRET,
+    cluster: 'us2',
+    encrypted: true
+});
 
 router.get("/", (req,res) => {
     Board.getAll().then(posts =>
-    res.status(201).json(posts))
+    res.status(200).json(posts))
+    .catch(err => res.status(500).json(err))
+})
+
+router.get("/count", (req,res) => {
+    Board.getCount().then(count =>
+        res.status(200).json(count[0].CNT))
+    .catch(err => res.status(500).json(err))
+})
+
+router.get("/:id", (req,res) => {
+    const id = Number(req.params.id);
+    Board.getPage(id).then(posts =>
+        res.status(200).json(posts)
+    )
+    .catch(err => res.status(500).json(err))
+})
+
+router.get("/post/:id", (req, res) => {
+    const id = req.params.id;
+    Board.findById(id).then(post => {
+        res.status(200).json(post)
+    })
+    .catch(err => console.log(err.response))
 })
 
 router.post('/', restricted, (req, res) => {
@@ -15,6 +45,9 @@ router.post('/', restricted, (req, res) => {
         Board.add(post)
         .then(saved => {
             const newPost = saved[0]
+            pusher.trigger('board', 'new-post', {
+                "message": "new post"
+            });
             res.status(201).json(newPost)
         })
         .catch(err => {
