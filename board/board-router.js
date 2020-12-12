@@ -22,6 +22,12 @@ router.get("/count", (req,res) => {
     .catch(err => res.status(500).json(err))
 })
 
+router.get("/pinned", (req,res) => {
+    Board.getPinned().then(pinned =>
+        res.status(200).json(pinned))
+    .catch(err => res.status(500).json(err))
+})
+
 router.get("/:id", (req,res) => {
     const id = Number(req.params.id);
     Board.getPage(id).then(posts =>
