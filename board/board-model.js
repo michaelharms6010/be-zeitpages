@@ -26,7 +26,7 @@ function getAll() {
 }
 
 function getPinned() {
-    return db('board_posts').where("datetime", ">", 1607810569).andWhere('amount', ">", '10000000').orderBy("amount", "desc").first()
+    return db('board_posts').where("datetime", ">", 1607810569).andWhere('amount', ">=", '10000000').orderBy("amount", "desc").first()
 }
 
 function getPage(page) {
