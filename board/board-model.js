@@ -7,7 +7,8 @@ module.exports = {
     remove,
     add,
     getCount,
-    findById
+    findById,
+    getPinned
 }
 
 function getCount() {
@@ -22,6 +23,10 @@ function findById(id) {
 
 function getAll() {
     return db('board_posts').returning("*")
+}
+
+function getPinned() {
+    return db('board_posts').where("datetime", ">", 1607810569).orderBy("amount", "desc").first()
 }
 
 function getPage(page) {
