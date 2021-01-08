@@ -2,6 +2,8 @@ const router = require('express').Router();
 const Board = require('./board-model');
 const restricted = require("../auth/restricted-middleware");
 var Pusher = require('pusher');
+const db = require('../data/db-config');
+const zaddrRegex = /zs[a-z0-9]{76}/i;
 var pusher = new Pusher({
     appId: process.env.PUSHER_APPID,
     key: process.env.PUSHER_KEY,
@@ -14,6 +16,20 @@ router.get("/", (req,res) => {
     Board.getAll().then(posts =>
     res.status(200).json(posts))
     .catch(err => res.status(500).json(err))
+})
+
+router.get("/migratereplyzaddrs", async (req, res) => {
+    try {
+        let posts = await Board.getAll();
+        posts = posts.filter(post => zaddrRegex.test(post.memo))
+        posts.forEach(async post => {
+            await db("board_posts").where({id: post.id}).update({ "reply_zaddr": post.memo.match(zaddrRegex)[0] })
+        })
+        res.status(200).json({message: "migration complete"})
+    }
+    catch (err) {
+        res.status(500).json({err})
+    }
 })
 
 router.get("/count", (req,res) => {
