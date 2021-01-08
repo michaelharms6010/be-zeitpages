@@ -58,6 +58,15 @@ function getPage(page) {
 }
 
 async function add(post) {
+
+    try {
+        if (likeRegex.test(atob(post.memo))) {
+            post.memo = atob(post.memo)
+        }
+    } catch {
+        
+    }
+
     if (post.memo.match(likeRegex)) {
         const like = post.memo.match(likeRegex)[0]
         const postId = like.split("::")[1].split(" ")[0]
