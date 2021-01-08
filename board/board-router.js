@@ -28,6 +28,13 @@ router.get("/pinned", (req,res) => {
     .catch(err => res.status(500).json(err))
 })
 
+router.get("/dailylikes", (req,res) => {
+    Board.getDaysLikes().then(likes =>
+        res.status(200).json(likes)
+    )
+    .catch(err => res.status(500).json(err))
+})
+
 router.get("/:id", (req,res) => {
     const id = Number(req.params.id);
     Board.getPage(id).then(posts =>
@@ -36,12 +43,7 @@ router.get("/:id", (req,res) => {
     .catch(err => res.status(500).json(err))
 })
 
-router.get("/dailylikes", (req,res) => {
-    Board.getDaysLikes().then(likes =>
-        res.status(200).json(likes)
-    )
-    .catch(err => res.status(500).json(err))
-})
+
 
 router.get("/post/:id", (req, res) => {
     const id = req.params.id;
