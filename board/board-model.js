@@ -53,7 +53,9 @@ async function add(post) {
         if (post.memo.match(replyRegex)) {
             const replyId = post.memo.match(replyRegex)[0].split("::")[1]
             const repliedPost = await db('board_posts').where({id: replyId}).first()
-            await db('board_posts').where({id: replyId}).update({reply_count: repliedPost.reply_count + 1})
+            if (repliedPost) {
+                await db('board_posts').where({id: replyId}).update({reply_count: repliedPost.reply_count + 1})
+            }
             post.reply_to_post = replyId;
         }
 
