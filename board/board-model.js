@@ -1,5 +1,6 @@
 const db = require("../data/db-config.js");
 const likeRegex = /LIKE::(\d+)/i
+const replyRegex = /REPLY::(\d+)/i
 const zaddrRegex = /^zs[a-z0-9]{76}$/i;
 
 module.exports = {
@@ -44,6 +45,10 @@ async function add(post) {
         if (post.memo.match(zaddrRegex)) {
             const replyZaddr = post.memo.match(zaddrRegex)[0];
             post.reply_zaddr = replyZaddr;
+        }
+        if (post.memo.match(replyRegex)) {
+            const replyId = post.memo.match(replyRegex)[0].split("::")[1]
+            post.reply_to_post = replyId;
         }
 
         return db('board_posts').insert(post).returning("*")
