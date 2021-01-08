@@ -19,7 +19,7 @@ function getCount() {
 }
 
 async function findById(id) {
-    const replies = await db("board_posts").where({"reply_to_post" : id})
+    const replies = await db("board_posts").where({"reply_to_post" : id}).orderBy("datetime", "desc")
     const post = await db('board_posts')
         .where({id})
         .first()
