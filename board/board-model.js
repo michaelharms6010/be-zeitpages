@@ -2,7 +2,7 @@ const { whereNull } = require("../data/db-config.js");
 const db = require("../data/db-config.js");
 const likeRegex = /LIKE::(\d+)/i
 const replyRegex = /REPLY::(\d+)/i
-const zaddrRegex = /^zs[a-z0-9]{76}$/i;
+const zaddrRegex = /zs[a-z0-9]{76}/i;
 
 module.exports = {
     getAll,
