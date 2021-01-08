@@ -18,20 +18,6 @@ router.get("/", (req,res) => {
     .catch(err => res.status(500).json(err))
 })
 
-router.get("/migratereplyzaddrs", async (req, res) => {
-    try {
-        let posts = await Board.getAll();
-        posts = posts.filter(post => zaddrRegex.test(post.memo))
-        posts.forEach(async post => {
-            await db("board_posts").where({id: post.id}).update({ "reply_zaddr": post.memo.match(zaddrRegex)[0] })
-        })
-        res.status(200).json({message: "migration complete"})
-    }
-    catch (err) {
-        res.status(500).json({err})
-    }
-})
-
 router.get("/count", (req,res) => {
     Board.getCount().then(count =>
         res.status(200).json(count[0].CNT))
