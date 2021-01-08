@@ -18,10 +18,13 @@ function getCount() {
     return db('board_posts').count("id as CNT")
 }
 
-function findById(id) {
-    return db('board_posts')
+async function findById(id) {
+    const replies = await db("board_posts").where({"reply_to_post" : id})
+    const post = await db('board_posts')
         .where({id})
         .first()
+    post.replies = replies
+    return post
 }
 
 function getAll() {
