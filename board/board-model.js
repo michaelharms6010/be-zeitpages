@@ -1,3 +1,4 @@
+const { whereNull } = require("../data/db-config.js");
 const db = require("../data/db-config.js");
 const likeRegex = /LIKE::(\d+)/i
 const replyRegex = /REPLY::(\d+)/i
@@ -32,7 +33,7 @@ function getPinned() {
 }
 
 function getPage(page) {
-    return db('board_posts').orderBy('id', 'desc').limit(25).offset(25 * (page-1)).returning("*")
+    return db('board_posts').whereNull('reply_to_post').orderBy('id', 'desc').limit(25).offset(25 * (page-1)).returning("*")
 }
 
 async function add(post) {
