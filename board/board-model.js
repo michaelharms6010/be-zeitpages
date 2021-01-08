@@ -1,5 +1,5 @@
 const db = require("../data/db-config.js");
-
+const likeRegex = /LIKE::(\d+)/i
 
 module.exports = {
     getAll,
@@ -34,8 +34,14 @@ function getPage(page) {
 }
 
 async function add(post) {
-    return db('board_posts').insert(post).returning("*")
-
+    const like = post.memo.match(likeRegex)[0]
+    if (like) {
+        const postId = like.split("::")[1]
+        const likedPost = await db('board_posts').where({id: postId}).first()
+        return db('board_posts').where({id: postId}).update({likes: likedPost.likes + 1})
+    } else {
+        return db('board_posts').insert(post).returning("*")
+    }
 }
 
 function remove(id) {
