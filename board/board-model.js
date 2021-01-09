@@ -63,8 +63,8 @@ async function add(post) {
         if (likeRegex.test(atob(post.memo))) {
             post.memo = atob(post.memo)
         }
-    } catch {
-        
+    } catch (err) {
+        console.log(err)
     }
 
     if (post.memo.match(likeRegex)) {
