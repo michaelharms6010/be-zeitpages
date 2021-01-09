@@ -16,6 +16,13 @@ router.get("/me", restricted, (req,res) => {
     })
 })
 
+router.get(/^\/(.+).json/, (req, res) => {
+    const username = req.params[0];
+    Users.findBy({username})
+    .then(r => res.status(200).json(r))
+    .catch(err => res.status(500).json(err))
+})
+
 router.put('/', restricted, (req,res) => {
     let {zaddr, twitter, website} = req.body;
     const id = req.decodedJwt.id;

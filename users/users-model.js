@@ -5,10 +5,14 @@ module.exports = {
     getAll,
     findById,
     remove,
-    updateUser
+    updateUser,
+    findBy
 }
 
 
+function findBy(filter) {
+    return db("users").where(filter).first()
+}
 function getAll() {
     return db('users').select('id', 'username', "zaddr", "proofposturl", "website", "twitter", "email", "description", "viewkey")
 }
