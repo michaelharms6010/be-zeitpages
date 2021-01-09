@@ -45,6 +45,18 @@ router.get("/:id", (req,res) => {
     .catch(err => res.status(500).json(err))
 })
 
+router.get("/leaderboard", (req, res) => {
+    Board.getLeaderboard()
+        .then(posts => res.status(200).json({posts}))
+        .catch(err => console.log(err))
+})
+
+router.get("/likecount", (req, res) => {
+    Board.getLikeCount()
+        .then(likes => res.status(200).json({likes}))
+        .catch(err => console.log(err))
+})
+
 
 
 router.get("/post/:id", (req, res) => {

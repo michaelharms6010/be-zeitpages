@@ -12,7 +12,9 @@ module.exports = {
     getCount,
     findById,
     getPinned,
-    getDaysLikes
+    getDaysLikes,
+    getLeaderboard,
+    getLikeCount
 }
 
 function getCount() {
@@ -56,6 +58,15 @@ function getPinned() {
 function getPage(page) {
     return db('board_posts').whereNull('reply_to_post').orderBy('id', 'desc').limit(25).offset(25 * (page-1)).returning("*")
 }
+
+function getLeaderboard() {
+    return db("board_posts").orderBy("likes", "desc").limit(10);
+}
+
+function getLikeCount() {
+    return db("board_posts").sum('likes');
+}
+
 
 async function add(post) {
 
