@@ -60,8 +60,8 @@ function getPage(page) {
 async function add(post) {
 
     try {
-        if (likeRegex.test(atob(post.memo))) {
-            post.memo = atob(post.memo)
+        if (likeRegex.test(atob(post.memo.trim()))) {
+            post.memo = atob(post.memo.trim())
         }
     } catch (err) {
         console.log(err)
