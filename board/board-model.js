@@ -60,8 +60,9 @@ function getPage(page) {
 async function add(post) {
 
     try {
-        if (likeRegex.test(atob(post.memo.trim()))) {
-            post.memo = atob(post.memo.trim())
+        const decodedMemo = Buffer.from(post.memo, "base64").toString("utf8")
+        if (likeRegex.test(decodedMemo)) {
+            post.memo = decodedMemo
         }
     } catch (err) {
         console.log(err)
