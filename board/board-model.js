@@ -74,7 +74,13 @@ async function add(post) {
         const decodedMemo = Buffer.from(post.memo, "base64").toString("utf8")
         if (likeRegex.test(decodedMemo)) {
             post.memo = decodedMemo.match(likeRegex)[0]
+        } 
+        
+        const decodedReplyTag = Buffer.from(post.memo.split(" ")[0], "base64").toString("utf8")
+        if (replyRegex.test(decodedReplyTag)) {
+            post.memo = post.memo.replace(post.memo.split(" ")[0], decodedReplyTag)
         }
+        
     } catch (err) {
         console.log(err)
     }
