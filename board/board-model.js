@@ -50,7 +50,7 @@ async function getDaysLikes() {
 
 async function getPayablePosts() {
     // const posts = await db("board_posts").whereRaw("likes > 0 AND reply_zaddr IS NOT NULL")
-    return knex.raw('select count(likes), reply_zaddr from board_posts where likes > 0 group by reply_zaddr');
+    return db.raw('select count(likes), reply_zaddr from board_posts where likes > 0 group by reply_zaddr');
     // return {posts}
 
 }
