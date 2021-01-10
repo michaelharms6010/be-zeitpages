@@ -37,6 +37,13 @@ router.get("/dailylikes", (req,res) => {
     .catch(err => res.status(500).json(err))
 })
 
+router.get("/payableposts", (req,res) => {
+    Board.getPayablePosts().then(likes =>
+        res.status(200).json(likes)
+    )
+    .catch(err => res.status(500).json(err))
+})
+
 
 router.get("/leaderboard", (req, res) => {
     Board.getLeaderboard()

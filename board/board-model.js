@@ -14,7 +14,8 @@ module.exports = {
     getPinned,
     getDaysLikes,
     getLeaderboard,
-    getLikeCount
+    getLikeCount,
+    getPayablePosts
 }
 
 function getCount() {
@@ -33,6 +34,22 @@ async function findById(id) {
 async function getDaysLikes() {
     const aDayAgo = Date.now() - (1000 * 60 * 60 * 25)
     const likes = await db("board_posts").whereNotNull("reply_zaddr").andWhere("datetime", ">", aDayAgo).andWhere('memo', 'like', 'LIKE::%')
+    const hash = {}
+    likes.forEach(like => {
+        let zaddr = like.reply_zaddr
+        if (hash[zaddr]) {
+            hash[zaddr] += 1
+        } else {
+            hash[zaddr] = 1
+        }
+    })
+
+    return hash
+
+}
+
+async function getPayablePosts() {
+    const likes = await db("board_posts").whereNotNull("reply_zaddr")
     const hash = {}
     likes.forEach(like => {
         let zaddr = like.reply_zaddr
