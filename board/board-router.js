@@ -39,7 +39,7 @@ router.get("/dailylikes", (req,res) => {
 
 router.get("/payableposts", (req,res) => {
     Board.getPayablePosts().then(likes =>
-        res.status(200).json(likes)
+        res.status(200).json({all_likes: likes.rows})
     )
     .catch(err => res.status(500).json(err))
 })
