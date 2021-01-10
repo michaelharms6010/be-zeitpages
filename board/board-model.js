@@ -60,7 +60,7 @@ async function getPayablePosts() {
         }
     })
 
-    return hash
+    return {posts: likes, likes: hash}
 
 }
 
