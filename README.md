@@ -12,7 +12,7 @@ Some Zecpages JSON API endpoints public and reachable via HTTP request.
 | GET /users/\<id\>      | Returns a single user's information |
 | GET /users/\<username\>.json   | Returns a single user's information  | 
 | GET /board      | Returns all board posts |
-| GET /board/<id>      | Retrieves a single post |
+| GET /board/\<id\>      | Retrieves a single post |
 | GET /board/leaderboard      | Returns the 10 most liked posts |
 
 
