@@ -49,18 +49,9 @@ async function getDaysLikes() {
 }
 
 async function getPayablePosts() {
-    const likes = await db("board_posts").whereNotNull("reply_zaddr").andWhere('likes', '>', '0')
-    const hash = {}
-    likes.forEach(like => {
-        let zaddr = like.reply_zaddr
-        if (hash[zaddr]) {
-            hash[zaddr] += 1
-        } else {
-            hash[zaddr] = 1
-        }
-    })
+    const posts = await db("board_posts").whereRaw("likes > 0 AND reply_zaddr IS NOT NULL")
 
-    return {posts: likes, likes: hash}
+    return {posts}
 
 }
 
