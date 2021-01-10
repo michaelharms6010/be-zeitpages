@@ -49,7 +49,7 @@ async function getDaysLikes() {
 }
 
 async function getPayablePosts() {
-    const likes = await db("board_posts").whereNotNull("reply_zaddr")
+    const likes = await db("board_posts").whereNotNull("reply_zaddr").andWhere('likes', '>', '0')
     const hash = {}
     likes.forEach(like => {
         let zaddr = like.reply_zaddr
