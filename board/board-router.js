@@ -38,11 +38,13 @@ router.get("/dailylikes", (req,res) => {
 })
 
 router.get("/payableposts", (req,res) => {
-    Board.getPayablePosts().then(likes =>
-        res.status(200).json({total_likes: likes.rows.map(like => {
-            return {[like.reply_zaddr]: +like.count}
-        })})
-    )
+    Board.getPayablePosts().then(likes => {
+        var total_likes = {}
+        likes.rows.forEach(like => {
+            total_likes[like.reply_zaddr] = like.count
+        })
+        res.status(200).json({total_likes})
+    })
     .catch(err => res.status(500).json(err))
 })
 
