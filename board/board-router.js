@@ -40,6 +40,9 @@ router.get("/dailylikes", (req,res) => {
 router.get("/payableposts", (req,res) => {
     Board.getPayablePosts().then(likes => {
         var total_likes = {}
+        likes.rows.forEach(row => {
+            total_likes[row.reply_zaddr] = row.likes
+        })
 
         res.status(200).json({total_likes: likes.rows})
     })
