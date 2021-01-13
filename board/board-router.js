@@ -44,7 +44,7 @@ router.get("/payableposts", (req,res) => {
             total_likes[row.reply_zaddr] = row.likes
         })
 
-        res.status(200).json({total_likes: likes.rows})
+        res.status(200).json({total_likes})
     })
     .catch(err => res.status(500).json(err))
 })
