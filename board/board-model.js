@@ -64,7 +64,7 @@ function getPinned() {
 }
 
 function getPage(page) {
-    return db('board_posts').join("users", "board_posts.reply_zaddr", "users.zaddr").whereNull('board_posts.reply_to_post').orderBy('id', 'desc').limit(25).offset(25 * (page-1)).select("board_posts.*", "users.username")
+    return db('board_posts').join("users", "board_posts.reply_zaddr", "users.zaddr").whereNull('board_posts.reply_to_post').orderBy('board_posts.id', 'desc').limit(25).offset(25 * (page-1)).select("board_posts.*", "users.username")
 }
 
 function getLeaderboard() {
