@@ -11,12 +11,12 @@ module.exports = {
     search
 }
 const SEARCHABLE_COLUMNS = ["zaddr", "username", "description", "twitter"]
-const getSearchPerms = (query, colNames) => {
+const getSearchPerms = (query, searchString, colNames) => {
      colNames.forEach(colName => {
-        query = query.orwhere(colName, "LIKE", `%${str}%`)
-        query = query.orWhere(colName, "LIKE", `${str}%`)
-        query = query.orWhere(colName, "LIKE", `%${str}`)
-        query = query.orWhere(colName, "=", `%${str}`)
+        query = query.orwhere(colName, "LIKE", `%${searchString}%`)
+        query = query.orWhere(colName, "LIKE", `${searchString}%`)
+        query = query.orWhere(colName, "LIKE", `%${searchString}`)
+        query = query.orWhere(colName, "=", `%${searchString}`)
      })
      return query
 }
@@ -25,9 +25,9 @@ function getPage(page) {
     return db('users').whereNotNull("zaddr").orderBy('id', 'desc').limit(25).offset(25 * (page-1))
 }
 
-function search(str){
+function search(searchString){
     const query = db("users")
-    query = getSearchPerms(query, SEARCHABLE_COLUMNS)
+    query = getSearchPerms(query, searchString, SEARCHABLE_COLUMNS)
     return query
 }
 
