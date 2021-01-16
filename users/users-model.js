@@ -11,7 +11,7 @@ module.exports = {
     search
 }
 const SEARCHABLE_COLUMNS = ["zaddr", "username", "description", "twitter"]
-
+// rudeboy stylee
 // for tomorrow .whereRaw('LOWER(column) LIKE ?', '%'+value.toLowerCase()+'%');
 const getSearchPerms = (query, searchString, colNames) => {
      colNames.forEach(colName => {
