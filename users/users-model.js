@@ -7,11 +7,17 @@ module.exports = {
     remove,
     updateUser,
     findBy,
-    getPage
+    getPage,
+    search
 }
 
 function getPage(page) {
     return db('users').whereNotNull("zaddr").orderBy('id', 'desc').limit(25).offset(25 * (page-1))
+}
+
+function search(str){
+    str = str.toLowerCase()
+    return db("users").where("LOWER(zaddr)", "LIKE", `%${str}%`).orWhere("LOWER(username)", "LIKE", `%${str}%`).orWhere("LOWER(description)", "LIKE", `%${str}%`).orWhere("LOWER(twitter)", "LIKE", `%${str}%`)
 }
 
 
