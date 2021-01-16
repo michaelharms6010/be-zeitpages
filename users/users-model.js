@@ -11,7 +11,7 @@ module.exports = {
 }
 
 function getPage(page) {
-    return db('users').orderBy('id', 'desc').limit(25).offset(25 * (page-1))
+    return db('users').whereNotNull("zaddr").orderBy('id', 'desc').limit(25).offset(25 * (page-1))
 }
 
 
