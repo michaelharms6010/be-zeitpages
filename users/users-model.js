@@ -26,7 +26,7 @@ function getPage(page) {
 }
 
 function search(searchString){
-    const query = db("users")
+    let query = db("users")
     query = getSearchPerms(query, searchString, SEARCHABLE_COLUMNS)
     return query
 }
