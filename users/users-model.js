@@ -17,7 +17,7 @@ function getPage(page) {
 
 function search(str){
     str = str.toLowerCase()
-    return db("users").where("LOWER(zaddr)", "LIKE", `%${str}%`).orWhere("LOWER(username)", "LIKE", `%${str}%`).orWhere("LOWER(description)", "LIKE", `%${str}%`).orWhere("LOWER(twitter)", "LIKE", `%${str}%`)
+    return db("users").where("zaddr", "LIKE", `%${str}%`).orWhere("username", "LIKE", `%${str}%`).orWhere("description", "LIKE", `%${str}%`).orWhere("twitter", "LIKE", `%${str}%`)
 }
 
 
