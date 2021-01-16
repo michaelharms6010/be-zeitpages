@@ -6,7 +6,12 @@ module.exports = {
     findById,
     remove,
     updateUser,
-    findBy
+    findBy,
+    getPage
+}
+
+function getPage(page) {
+    return db('users').orderBy('id', 'desc').limit(25).offset(25 * (page-1))
 }
 
 

@@ -9,6 +9,12 @@ router.get("/", (req,res) => {
     res.status(201).json(users))
 })
 
+router.get("/page/:page", (req,res) => {
+    Users.getPage(+req.params.page).then(users =>
+    res.status(201).json(users))
+    .catch(err => res.status(500).json({err}))
+})
+
 router.get("/zaddr/:zaddr", (req, res) => {
     const {zaddr} = req.params
     Users.findBy({zaddr})
@@ -23,7 +29,16 @@ router.get("/me", restricted, (req,res) => {
     })
 })
 
-router.get(/^\/(.+).json/, (req, res) => {
+
+
+router.get(/^\/(.+).json$/, (req, res) => {
+    const username = req.params[0];
+    Users.findBy({username})
+    .then(r => res.status(200).json(r))
+    .catch(err => res.status(500).json(err))
+})
+
+router.get(/^\/(.+)/, (req, res) => {
     const username = req.params[0];
     Users.findBy({username})
     .then(r => res.status(200).json(r))
