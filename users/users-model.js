@@ -13,7 +13,7 @@ module.exports = {
 const SEARCHABLE_COLUMNS = ["zaddr", "username", "description", "twitter"]
 const getSearchPerms = (query, searchString, colNames) => {
      colNames.forEach(colName => {
-        query = query.orwhere(colName, "LIKE", `%${searchString}%`)
+        query = query.orWhere(colName, "LIKE", `%${searchString}%`)
         query = query.orWhere(colName, "LIKE", `${searchString}%`)
         query = query.orWhere(colName, "LIKE", `%${searchString}`)
         query = query.orWhere(colName, "=", `%${searchString}`)
