@@ -9,6 +9,13 @@ router.get("/", (req,res) => {
     res.status(201).json(users))
 })
 
+router.get("/zaddr/:zaddr", (req, res) => {
+    const {zaddr} = req.params
+    Users.findBy({zaddr})
+    .then(r => res.status(200).json(r))
+    .catch(err => res.status(500).json({err}))
+})
+
 router.get("/me", restricted, (req,res) => {
     Users.findById(req.decodedJwt.id).then(user => {
         delete user.password;
