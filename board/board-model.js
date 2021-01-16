@@ -24,8 +24,8 @@ function getCount() {
 
 async function findById(id) {
     const replies = await db("board_posts").where({"reply_to_post" : id}).orderBy("datetime", "desc")
-    const post = await db('board_posts')
-        .where({id})
+    const post = await db('board_posts').leftJoin("users", "board_posts.reply_zaddr", "users.zaddr")
+        .where({id}).select("board_posts.*", "users.username")
         .first()
     post.replies = replies
     return post
@@ -68,7 +68,7 @@ function getPage(page) {
 }
 
 function getLeaderboard() {
-    return db("board_posts").orderBy("likes", "desc").limit(10);
+    return db("board_posts").leftJoin("users", "board_posts.reply_zaddr", "users.zaddr").orderBy("likes", "desc").limit(10).select("board_posts.*", "users.username");
 }
 
 function getLikeCount() {
