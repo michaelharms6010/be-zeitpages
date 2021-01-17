@@ -52,8 +52,9 @@ router.get(/^\/(.+)/, (req, res) => {
 })
 
 router.post("/search", (req, res) => {
-    const {search} = req.body;
-    Users.search(search)
+    const {search, require_proof, require_twitter} = req.body;
+
+    Users.search(search, require_proof, require_twitter)
     .then(r => res.status(200).json(r))
     .catch(err => res.status(500).json(err))
 })

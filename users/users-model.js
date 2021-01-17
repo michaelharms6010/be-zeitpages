@@ -38,9 +38,15 @@ function getCount(page) {
     return db('users').whereNotNull("zaddr").count("id as CNT")
 }
 
-function search(searchString){
+function search(searchString, require_proof, require_twitter){
     let query = db("users")
     query = getSearchPerms(query, searchString, SEARCHABLE_COLUMNS)
+    if (require_proof) {
+        query = query.whereNotNull("proofposturl")
+    }
+    if (require_twitter) {
+        query = query.whereNotNull("twitter")
+    }
     return query
 }
 
