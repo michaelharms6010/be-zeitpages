@@ -46,12 +46,12 @@ async function search(searchString, require_proof, require_twitter){
 
     let results = await query
 
-    SEARCHABLE_COLUMNS.forEach(colName => {
-        results = results.filter(user => (user[colName] && user[colName].toLowerCase().includes(searchString)) || 
-                                        (user[colName] && user[colName].toLowerCase().includes(searchString)) ||   
-                                        (user[colName] && user[colName].toLowerCase().includes(searchString)) ||
-                                        (user[colName] && user[colName].toLowerCase().includes(searchString)))    
-    })
+
+    results = results.filter(user => (user.zaddr && user.zaddr.toLowerCase().includes(searchString)) || 
+                                    (user.username && user.username.toLowerCase().includes(searchString)) ||   
+                                    (user.descrition && user.descrition.toLowerCase().includes(searchString)) ||
+                                    (user.twitter && user.twitter.toLowerCase().includes(searchString)))    
+
 
     if (require_proof) {
         results = results.filter(user => user.proofposturl)
