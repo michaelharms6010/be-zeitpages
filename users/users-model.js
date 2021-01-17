@@ -49,7 +49,7 @@ async function search(searchString, require_proof, require_twitter){
 
     results = results.filter(user => (user.zaddr && user.zaddr.toLowerCase().includes(searchString)) || 
                                     (user.username && user.username.toLowerCase().includes(searchString)) ||   
-                                    (user.descrition && user.descrition.toLowerCase().includes(searchString)) ||
+                                    (user.description && user.description.toLowerCase().includes(searchString)) ||
                                     (user.twitter && user.twitter.toLowerCase().includes(searchString)))    
 
 
