@@ -38,20 +38,19 @@ function getCount(page) {
     return db('users').whereNotNull("zaddr").count("id as CNT")
 }
 
-function search(searchString, require_proof, require_twitter){
+async function search(searchString, require_proof, require_twitter){
     let query = db("users")
     query = getSearchPerms(query, searchString, SEARCHABLE_COLUMNS)
+
+    let results = await query
+
     if (require_proof) {
-        query = query.andWhere(function() {
-            this.whereNotNull("proofposturl")
-          })
+        results = results.filter(user => user.proofposturl)
+    } if (require_twitter) {
+        results = results.filter(user => user.twitter)
     }
-    if (require_twitter) {
-        query = query.andWhere(function() {
-            this.whereNotNull("twitter")
-          })
-    }
-    return query
+
+    return results
 }
 
 
