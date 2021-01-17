@@ -49,6 +49,15 @@ router.get("/payableposts", (req,res) => {
     .catch(err => res.status(500).json(err))
 })
 
+router.get("/postswithzaddr", (req,res) => {
+    Board.getPostsWithZaddr().then(r => {
+        
+
+        res.status(200).json({posts: r})
+    })
+    .catch(err => res.status(500).json(err))
+})
+
 
 router.get("/leaderboard", (req, res) => {
     Board.getLeaderboard()

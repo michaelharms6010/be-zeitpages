@@ -15,11 +15,16 @@ module.exports = {
     getDaysLikes,
     getLeaderboard,
     getLikeCount,
-    getPayablePosts
+    getPayablePosts,
+    getPostsWithZaddr
 }
 
 function getCount() {
     return db('board_posts').count("id as CNT")
+}
+
+function getPostsWithZaddr() {
+    return db("board_posts").whereNotNull("reply_zaddr")
 }
 
 async function findById(id) {
