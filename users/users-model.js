@@ -16,10 +16,10 @@ const SEARCHABLE_COLUMNS = ["zaddr", "username", "description", "twitter"]
 // for tomorrow .whereRaw('LOWER(column) LIKE ?', '%'+value.toLowerCase()+'%');
 const getSearchPerms = (query, searchString, colNames) => {
      colNames.forEach(colName => {
-        query = query.whereRaw(`LOWER(${colname}) LIKE ?'`, '%'+searchString.toLowerCase()+'%');
-        query = query.whereRaw(`LOWER(${colname}) LIKE ?'`, searchString.toLowerCase()+'%');
-        query = query.whereRaw(`LOWER(${colname}) LIKE ?'`, '%'+searchString.toLowerCase());
-        query = query.whereRaw(`LOWER(${colname}) = ?'`, searchString.toLowerCase());
+        query = query.whereRaw(`LOWER(${colName}) LIKE ?'`, '%'+searchString.toLowerCase()+'%');
+        query = query.whereRaw(`LOWER(${colName}) LIKE ?'`, searchString.toLowerCase()+'%');
+        query = query.whereRaw(`LOWER(${colName}) LIKE ?'`, '%'+searchString.toLowerCase());
+        query = query.whereRaw(`LOWER(${colName}) = ?'`, searchString.toLowerCase());
         // query = query.orWhere(colName, "LIKE", `%${searchString}%`)
         // query = query.orWhere(colName, "LIKE", `${searchString}%`)
         // query = query.orWhere(colName, "LIKE", `%${searchString}`)
