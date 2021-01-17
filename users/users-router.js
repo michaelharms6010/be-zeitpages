@@ -17,7 +17,7 @@ router.get("/page/:page", (req,res) => {
 
 router.get("/count", (req,res) => {
     Users.getCount().then(count =>
-    res.status(200).json(count))
+    res.status(200).json({count: count[0].CNT}))
     .catch(err => res.status(500).json({err}))
 })
 
