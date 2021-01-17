@@ -11,7 +11,13 @@ router.get("/", (req,res) => {
 
 router.get("/page/:page", (req,res) => {
     Users.getPage(+req.params.page).then(users =>
-    res.status(201).json(users))
+    res.status(200).json(users))
+    .catch(err => res.status(500).json({err}))
+})
+
+router.get("/count", (req,res) => {
+    Users.getCount().then(count =>
+    res.status(200).json(count))
     .catch(err => res.status(500).json({err}))
 })
 

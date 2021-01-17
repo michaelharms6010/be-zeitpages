@@ -8,7 +8,8 @@ module.exports = {
     updateUser,
     findBy,
     getPage,
-    search
+    search,
+    getCount
 }
 const SEARCHABLE_COLUMNS = ["zaddr", "username", "description", "twitter"]
 // rudeboy stylee
@@ -29,6 +30,10 @@ const getSearchPerms = (query, searchString, colNames) => {
 
 function getPage(page) {
     return db('users').whereNotNull("zaddr").orderBy('id', 'desc').limit(25).offset(25 * (page-1))
+}
+
+function getCount(page) {
+    return db('users').whereNotNull("zaddr").count("id as CNT")
 }
 
 function search(searchString){
