@@ -38,11 +38,20 @@ function getCount(page) {
     return db('users').whereNotNull("zaddr").count("id as CNT")
 }
 
+// const SEARCHABLE_COLUMNS = ["zaddr", "username", "description", "twitter"]
+
 async function search(searchString, require_proof, require_twitter){
-    let query = db("users")
-    query = getSearchPerms(query, searchString, SEARCHABLE_COLUMNS)
+    let query = await db("users").whereNotNull("zaddr")
+    searchString = searchString.toLowerCase()
 
     let results = await query
+
+    SEARCHABLE_COLUMNS.forEach(colName => {
+        results = results.filter(user => (user[colName] && user[colName].toLowerCase().includes(searchString)) || 
+                                        (user[colName] && user[colName].toLowerCase().includes(searchString)) ||   
+                                        (user[colName] && user[colName].toLowerCase().includes(searchString)) ||
+                                        (user[colName] && user[colName].toLowerCase().includes(searchString)))    
+    })
 
     if (require_proof) {
         results = results.filter(user => user.proofposturl)
