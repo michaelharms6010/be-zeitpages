@@ -40,9 +40,9 @@ function getCount(page) {
 
 
 async function search(searchString, require_proof, require_twitter){
-    let query = db("users").whereNotNull("zaddr")
+    let query = db("users")
 
-    query = query.orWhere("zaddr", "=", searchString)
+    query = query.where("zaddr", "=", searchString)
     SEARCHABLE_COLUMNS.forEach(colName => {
         query = query.orWhere(colName, 'ilike', `%${searchString}%`)
         query = query.orWhere(colName, 'ilike', `%${searchString}`)
