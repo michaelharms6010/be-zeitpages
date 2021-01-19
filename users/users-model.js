@@ -38,11 +38,10 @@ function getCount(page) {
     return db('users').whereNotNull("zaddr").count("id as CNT")
 }
 
-const SEARCHABLE_COLUMNS = ["username", "description", "twitter"]
 
 async function search(searchString, require_proof, require_twitter){
     let query = await db("users").whereNotNull("zaddr")
-    
+
     query = query.orWhere("zaddr", "=", searchString)
     SEARCHABLE_COLUMNS.forEach(colName => {
         query = query.orWhere(colName, 'ilike', `%${searchString}%`)
