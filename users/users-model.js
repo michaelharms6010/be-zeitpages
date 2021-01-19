@@ -38,19 +38,26 @@ function getCount(page) {
     return db('users').whereNotNull("zaddr").count("id as CNT")
 }
 
-// const SEARCHABLE_COLUMNS = ["zaddr", "username", "description", "twitter"]
+const SEARCHABLE_COLUMNS = ["username", "description", "twitter"]
 
 async function search(searchString, require_proof, require_twitter){
     let query = await db("users").whereNotNull("zaddr")
-    searchString = searchString.toLowerCase()
+    
+    query = query.orWhere("zaddr", "=", searchString)
+    SEARCHABLE_COLUMNS.forEach(colName => {
+        query = query.orWhere(colName, 'ilike', `%${searchString}%`)
+        query = query.orWhere(colName, 'ilike', `%${searchString}`)
+        query = query.orWhere(colName, 'ilike', `${searchString}%`)
+        query = query.orWhere(colName, 'ilike', `${searchString}`)
+    })
 
     let results = await query
 
 
-    results = results.filter(user => (user.zaddr && user.zaddr.toLowerCase().includes(searchString)) || 
-                                    (user.username && user.username.toLowerCase().includes(searchString)) ||   
-                                    (user.description && user.description.toLowerCase().includes(searchString)) ||
-                                    (user.twitter && user.twitter.toLowerCase().includes(searchString)))    
+    // results = results.filter(user => (user.zaddr && user.zaddr.toLowerCase().includes(searchString)) || 
+    //                                 (user.username && user.username.toLowerCase().includes(searchString)) ||   
+    //                                 (user.description && user.description.toLowerCase().includes(searchString)) ||
+    //                                 (user.twitter && user.twitter.toLowerCase().includes(searchString)))    
 
 
     if (require_proof) {
