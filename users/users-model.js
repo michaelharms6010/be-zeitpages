@@ -40,7 +40,7 @@ function getCount(page) {
 
 
 async function search(searchString, require_proof, require_twitter){
-    let query = await db("users").whereNotNull("zaddr")
+    let query = db("users").whereNotNull("zaddr")
 
     query = query.orWhere("zaddr", "=", searchString)
     SEARCHABLE_COLUMNS.forEach(colName => {
