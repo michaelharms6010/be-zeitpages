@@ -73,7 +73,7 @@ function getPage(page) {
 }
 
 function getLeaderboard() {
-    return db("board_posts").leftJoin("users", "board_posts.reply_zaddr", "users.zaddr").orderBy("likes", "desc").limit(10).select("board_posts.*", "users.username");
+    return db("board_posts").leftJoin("users", "board_posts.reply_zaddr", "users.zaddr").orderBy({ column: 'likes', order: 'desc' }, 'board_posts.id').limit(10).select("board_posts.*", "users.username");
 }
 
 function getLikeCount() {
