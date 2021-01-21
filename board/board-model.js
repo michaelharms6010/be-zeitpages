@@ -20,7 +20,7 @@ module.exports = {
 }
 
 function getCount() {
-    return db('board_posts').count("id as CNT")
+    return db('board_posts').whereNull("reply_to_post").count("id as CNT")
 }
 
 function getPostsWithZaddr() {
