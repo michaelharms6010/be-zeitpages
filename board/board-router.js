@@ -97,6 +97,7 @@ router.post('/', restricted, (req, res) => {
         .then(saved => {
             const newPost = saved[0]
             pusher.trigger('board', 'new-post', {
+                "reply_to": newPost.reply_to_post,
                 "new_post": newPost.id ? true : false,
                 "liked_post_id": newPost.liked_post_id,
                 "message": "new post"
