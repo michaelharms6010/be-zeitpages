@@ -102,7 +102,8 @@ async function add(post) {
         const like = post.memo.match(likeRegex)[0]
         const postId = like.split("::")[1].split(" ")[0]
         const likedPost = await db('board_posts').where({id: postId}).first()
-        return db('board_posts').where({id: postId}).update({likes: likedPost.likes + 1})
+        await db('board_posts').where({id: postId}).update({likes: likedPost.likes + 1})
+        return [{liked_post_id: Number(postId)}]
     } else {
         if (post.memo.match(zaddrRegex)) {
             const replyZaddr = post.memo.match(zaddrRegex)[0];
