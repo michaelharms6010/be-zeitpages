@@ -6,11 +6,15 @@ const morgan = require("morgan");
 const rateLimit = require("express-rate-limit");
 
 const dataLimiter = rateLimit({
+    message:
+    "Easy there pal it's a t2 micro",
     windowMs: 60 * 60 * 1000, // 15 minutes
     max: 500
   });
 
   const authLimiter = rateLimit({
+    message:
+    "You are acting shady imo - can you plz chill a bit?",
     windowMs: 15 * 60 * 1000, // 15 minutes
     max: 25
   });
