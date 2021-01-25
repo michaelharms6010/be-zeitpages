@@ -3,6 +3,7 @@ const db = require("../data/db-config.js");
 const likeRegex = /LIKE::(\d+)/i
 const replyRegex = /REPLY::(\d+)/i
 const zaddrRegex = /zs[a-z0-9]{76}/i;
+const splitMemoRegex = /-\d+$/
 
 module.exports = {
     getAll,
@@ -121,6 +122,19 @@ async function add(post) {
                 await db('board_posts').where({id: replyId}).update({reply_count: repliedPost.reply_count + 1})
             }
             post.reply_to_post = replyId;
+        }
+
+        
+        if (post.txid) {
+            let replyNum = post.txid.match(splitMemoRegex)
+            if (replyNum) {
+                originalTxid = post.txid.replace(splitMemoRegex, "-1") 
+                const replyingToPost = await db("board_posts").where({txid: originalTxid}).first()
+                if (replyingToPost) {
+                    post.reply_to_post = replyingToPost.id
+                }
+            }
+
         }
 
         return db('board_posts').insert(post).returning("*")
