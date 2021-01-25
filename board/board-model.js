@@ -16,7 +16,8 @@ module.exports = {
     getLeaderboard,
     getLikeCount,
     getPayablePosts,
-    getPostsWithZaddr
+    getPostsWithZaddr,
+    setReplyCount
 }
 
 function getCount() {
@@ -58,6 +59,10 @@ async function getPayablePosts() {
     return db.raw('select SUM(likes) as likes, reply_zaddr from board_posts where reply_zaddr is not null and likes > 0 group by reply_zaddr');
     // return {posts}
 
+}
+
+async function setReplyCount(id, reply_count) {
+    return db("board_posts").where({id}).update({reply_count}).returning("*")
 }
 
 function getAll() {

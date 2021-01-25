@@ -113,6 +113,26 @@ router.post('/', restricted, (req, res) => {
     }
   });
 
+  router.post('/setreplycount/:id', restricted, (req, res) => {
+    const {new_count} = req.body;
+    if (req.decodedJwt.id === 2) {
+        Board.setReplyCount(req.params.id, new_count)
+        .then(post => {
+            if (!post) {
+                res.status(404).json({message: "No post exists by that ID!"})
+            } else {
+                res.status(200).json({message: "reply Decremented"})
+            }
+        })
+        .catch(err => {
+            console.log(err)
+            res.status(500).json(err)
+        })
+    } else {
+        res.status(500).json({bro: "cmon now"})
+    }
+})
+
 
 router.delete('/:id', restricted, (req, res) => {
     if (req.decodedJwt.id === 2) {
