@@ -128,7 +128,7 @@ async function add(post) {
         if (post.txid) {
             let replyNum = post.txid.match(splitMemoRegex)
             if (replyNum) {
-                originalTxid = post.txid.replace(splitMemoRegex, "-1") 
+                const originalTxid = post.txid.replace(splitMemoRegex, "-1") 
                 const replyingToPost = await db("board_posts").where({txid: originalTxid}).first()
                 if (replyingToPost) {
                     post.reply_to_post = replyingToPost.id
