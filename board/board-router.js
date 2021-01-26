@@ -67,7 +67,7 @@ router.get("/leaderboard", (req, res) => {
 
 router.get("/monthlyzaddrs", (req, res) => {
     Board.getMonthlyZaddrs()
-.then(zaddrs => res.status(200).json({ zaddrs: zaddrs.map( zaddr => zaddr.zaddr ) /* smoke em if you got em */ }))
+.then(zaddrs => res.status(200).json({ zaddrs: zaddrs.map( zaddr => zaddr.reply_zaddr ) /* smoke em if you got em */ }))
     .catch(err => console.log(err))
 })
 
