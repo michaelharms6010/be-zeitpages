@@ -26,7 +26,7 @@ module.exports = {
 
 function getMonthlyZaddrs() {
     const oneMonthAgo = Date.now() - (1000 * 60 * 60 * 24 * 30)
-    return db("board_posts").whereNotNull("reply_zaddr").andWhere("datetime", ">", oneMonthAgo)
+    return db("board_posts").whereNotNull("reply_zaddr").andWhere("datetime", ">", oneMonthAgo).select("zaddr")
 }
 
 function getCount() {
