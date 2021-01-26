@@ -18,7 +18,15 @@ module.exports = {
     getLikeCount,
     getPayablePosts,
     getPostsWithZaddr,
-    setReplyCount
+    setReplyCount,
+    getMonthlyZaddrs
+}
+
+
+
+function getMonthlyZaddrs() {
+    const oneMonthAgo = Date.now() - (1000 * 60 * 60 * 24 * 30)
+    return db("board_posts").whereNotNull("reply_zaddr").andWhere("datetime", ">", oneMonthAgo)
 }
 
 function getCount() {

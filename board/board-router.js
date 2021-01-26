@@ -65,6 +65,12 @@ router.get("/leaderboard", (req, res) => {
     .catch(err => console.log(err))
 })
 
+router.get("/monthlyzaddrs", (req, res) => {
+    Board.getMonthlyZaddrs()
+    .then(zaddrs => res.status(200).json({zaddrs}))
+    .catch(err => console.log(err))
+})
+
 router.get("/likecount", (req, res) => {
     Board.getLikeCount()
     .then(likes => res.status(200).json({likes}))
