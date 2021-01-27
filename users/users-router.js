@@ -36,7 +36,7 @@ router.get("/me", restricted, (req,res) => {
 })
 
 router.get("/getusernames", restricted, (req,res) => {
-    Users.getUseranmes().then(user => {
+    Users.getUsernames().then(user => {
         delete user.password;
         res.status(201).json({usernames: user.map(u => u.username)})
     })
