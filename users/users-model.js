@@ -9,7 +9,8 @@ module.exports = {
     findBy,
     getPage,
     search,
-    getCount
+    getCount,
+    getUsernames
 }
 const SEARCHABLE_COLUMNS = ["username", "description", "twitter"]
 // rudeboy stylee
@@ -36,6 +37,10 @@ async function getPage(page) {
 
 function getCount(page) {
     return db('users').whereNotNull("zaddr").count("id as CNT")
+}
+
+function getUsernames() {
+    return db('users').whereNotNull("zaddr").select("username")
 }
 
 
