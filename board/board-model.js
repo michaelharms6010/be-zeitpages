@@ -19,7 +19,8 @@ module.exports = {
     getPayablePosts,
     getPostsWithZaddr,
     setReplyCount,
-    getMonthlyZaddrs
+    getMonthlyZaddrs,
+    getPostIds
 }
 
 
@@ -76,6 +77,10 @@ async function setReplyCount(id, reply_count) {
 
 function getAll() {
     return db('board_posts').returning("*")
+}
+
+function getPostIds() {
+    return db("board_posts").select("id")
 }
 
 function getPinned() {
