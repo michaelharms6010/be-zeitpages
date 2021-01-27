@@ -2,7 +2,7 @@
  
 ## Public endpoints
 
-Some Zecpages JSON API endpoints public and reachable via HTTP request. Great way for ppl who don't want to play around with browsers and client-side javascripts to grab ZECpages' data.
+Some Zecpages JSON API endpoints public and reachable via HTTP request. Great way for ppl who don't want to play around with browsers and client-side scripts to grab ZECpages' data.
 
 **Base URL:** `https://be.zecpages.com`
 
