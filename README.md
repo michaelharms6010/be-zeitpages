@@ -4,6 +4,8 @@
 
 Some Zecpages JSON API endpoints public and reachable via HTTP request. Great way for ppl who don't want to play around with browsers and client-side scripts to grab ZECpages' data.
 
+It's rate-limited but I think it's pretty generous at >100 requests/hr. Please be nice so I don't have to lower the rate limit :)
+
 **Base URL:** `https://be.zecpages.com`
 
 | Endpoint      | Returns |
