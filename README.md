@@ -1,4 +1,4 @@
-# Zeitpages backend
+# Zeitpages API
  
 ## Public endpoints
 
@@ -13,7 +13,7 @@ Some Zecpages JSON API endpoints public and reachable via HTTP request.
 | GET /users/\<username\>.json   | Returns a single user's information  | 
 | GET /board      | Returns all board posts |
 | GET /board/\<id\>      | Retrieves a single post |
-| GET /board/leaderboard      | Returns the 10 most liked posts |
+| GET /board/leaderboard      | Returns most liked posts |
 
 
 ## Older documentation for endpoints that the actual app uses, still public but not super interesting
