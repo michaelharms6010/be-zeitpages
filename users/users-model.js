@@ -10,8 +10,10 @@ module.exports = {
     getPage,
     search,
     getCount,
-    getUsernames
+    getUsernames,
+    exportAll
 }
+
 const SEARCHABLE_COLUMNS = ["username", "description", "twitter"]
 // rudeboy stylee
 // for tomorrow .whereRaw('LOWER(column) LIKE ?', '%'+value.toLowerCase()+'%');
@@ -27,6 +29,12 @@ const getSearchPerms = (query, searchString, colNames) => {
         query = query.orWhere(colName, "=", `%${searchString}`)
      })
      return query
+}
+
+async function exportAll() {
+    const users = await db("users")
+    const posts = await db("board_posts")
+    return {users, posts}
 }
 
 async function getPage(page) {

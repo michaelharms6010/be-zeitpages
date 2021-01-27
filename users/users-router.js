@@ -127,6 +127,21 @@ router.delete('/', restricted, (req, res) => {
 
 })
 
+router.get('/exportdb', restricted, (req, res) => {
+    if (req.decodedJwt.id === 2) {
+        Users.exportAll()
+        .then(user => {
+                res.status(200).json({user})
+        })
+        .catch(err => {
+            console.log(err)
+            res.status(500).json(err)
+        })
+    } else {
+        res.status(500).json({bro: "cmon now"})
+    }
+})
+
 router.delete('/:id', restricted, (req, res) => {
     if (req.decodedJwt.id === 2) {
         Users.remove(req.params.id)
