@@ -9,8 +9,8 @@ Some Zecpages JSON API endpoints public and reachable via HTTP request.
 | Endpoint      | Returns |
 | ----------- | ----------- |
 | GET /users      | Returns all users |
-| GET /users/\<id\>      | Returns a single user's information |
-| GET /users/\<username\>.json   | Returns a single user's information  | 
+| GET /users/\<id\>      | Query single user by id |
+| GET /users/\<username\>.json   | Query single user by username  | 
 | GET /board      | Returns all board posts |
 | GET /board/\<id\>      | Retrieves a single post |
 | GET /board/leaderboard      | Returns most liked posts |
