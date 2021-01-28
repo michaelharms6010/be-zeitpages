@@ -116,10 +116,10 @@ async function add(post) {
             post.memo = decodedMemo.match(likeRegex)[0]
         } 
 
-        const decodedBoardTag = Buffer.from(post.memo.split(" ")[0], "base64").toString("utf8")
-        if (boardRegex.test(decodedBoardTag)) {
-            post.memo = post.memo.replace(post.memo.split(" ")[0], decodedBoardTag)
-        }
+        // const decodedBoardTag = Buffer.from(post.memo.split(" ")[0], "base64").toString("utf8")
+        // if (boardRegex.test(decodedBoardTag)) {
+        //     post.memo = post.memo.replace(post.memo.split(" ")[0], decodedBoardTag)
+        // }
         
         const decodedReplyTag = Buffer.from(post.memo.split(" ")[0], "base64").toString("utf8")
         if (replyRegex.test(decodedReplyTag)) {
