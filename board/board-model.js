@@ -22,7 +22,12 @@ module.exports = {
     setReplyCount,
     getMonthlyZaddrs,
     getPostIds,
-    getSubBoard
+    getSubBoard,
+    updatePost
+}
+
+function updatePost(id,changes ) {
+    return db("board_posts").where({id}).update(changes).returning("*")
 }
 
 function getSubBoard(board_name) {

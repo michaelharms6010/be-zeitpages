@@ -151,6 +151,24 @@ router.post('/', restricted, (req, res) => {
     }
 })
 
+router.put('/:id', restricted, (req, res) => {
+    const updates = req.body;
+    if (req.decodedJwt.id === 2) {
+        Board.updatePost(req.params.id, updates)
+        .then(post => {
+
+                res.status(200).json({message: "board post updated", post})
+            
+        })
+        .catch(err => {
+            console.log(err)
+            res.status(500).json(err)
+        })
+    } else {
+        res.status(500).json({bro: "cmon now"})
+    }
+})
+
 
 router.delete('/:id', restricted, (req, res) => {
     if (req.decodedJwt.id === 2) {
