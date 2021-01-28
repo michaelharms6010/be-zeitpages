@@ -23,7 +23,8 @@ module.exports = {
     getMonthlyZaddrs,
     getPostIds,
     getSubBoard,
-    updatePost
+    updatePost,
+    getBoardNames
 }
 
 function updatePost(id,changes ) {
@@ -94,6 +95,10 @@ function getAll() {
 
 function getPostIds() {
     return db("board_posts").select("id", "likes").orderBy("likes")
+}
+
+function getBoardNames() {
+    return db("board_posts").distinct("board_name")
 }
 
 function getPinned() {
