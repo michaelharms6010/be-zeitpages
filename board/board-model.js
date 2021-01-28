@@ -93,7 +93,7 @@ function getAll() {
 }
 
 function getPostIds() {
-    return db("board_posts").select("id")
+    return db("board_posts").select("id", "likes").orderBy("likes")
 }
 
 function getPinned() {
