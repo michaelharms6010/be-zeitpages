@@ -2,7 +2,7 @@ const { whereNull } = require("../data/db-config.js");
 const db = require("../data/db-config.js");
 const likeRegex = /LIKE::(\d+)/i
 const replyRegex = /REPLY::(\d+)/i
-const boardRegex = /BOARD::(\w+)/i
+const boardRegex = /BOARD::( *)(\w+)/i
 const zaddrRegex = /zs[a-z0-9]{76}/i;
 const splitMemoRegex = /-\d+$/
 
@@ -163,7 +163,7 @@ async function add(post) {
         }
 
         if (post.memo.match(boardRegex)) {
-            const boardName = post.memo.match(boardRegex)[0].split("::")[1].toLowerCase()
+            const boardName = post.memo.match(boardRegex)[0].split("::")[1].toLowerCase().replace(/[\\\/ ]/g, "")
 
             if (boardName) post.board_name = boardName;
         }
