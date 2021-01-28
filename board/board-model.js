@@ -2,6 +2,7 @@ const { whereNull } = require("../data/db-config.js");
 const db = require("../data/db-config.js");
 const likeRegex = /LIKE::(\d+)/i
 const replyRegex = /REPLY::(\d+)/i
+const boardRegex = /BOARD::(\w+)/i
 const zaddrRegex = /zs[a-z0-9]{76}/i;
 const splitMemoRegex = /-\d+$/
 
@@ -20,7 +21,12 @@ module.exports = {
     getPostsWithZaddr,
     setReplyCount,
     getMonthlyZaddrs,
-    getPostIds
+    getPostIds,
+    getSubBoard
+}
+
+function getSubBoard(board_name) {
+    return db("board_posts").where({board_name})
 }
 
 
@@ -135,6 +141,12 @@ async function add(post) {
                 await db('board_posts').where({id: replyId}).update({reply_count: repliedPost.reply_count + 1})
             }
             post.reply_to_post = replyId;
+        }
+
+        if (post.memo.match(boardRegex)) {
+            const boardName = post.memo.match(boardRegex)[0].split("::")[1] && post.memo.match(boardRegex)[0].split("::")[1].toLowerCase()
+
+            if (boardName) post.board_name = boardName;
         }
 
         

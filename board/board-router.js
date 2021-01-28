@@ -24,6 +24,12 @@ router.get("/count", (req,res) => {
     .catch(err => res.status(500).json(err))
 })
 
+router.get("/z/:boardname", (req,res) => {
+    Board.getSubBoard(req.params.boardname).then(board =>
+        res.status(200).json({board}))
+    .catch(err => res.status(500).json(err))
+})
+
 router.get("/pinned", (req,res) => {
     Board.getPinned().then(pinned =>
         res.status(200).json(pinned))

@@ -8,7 +8,7 @@ const rateLimit = require("express-rate-limit");
 const dataLimiter = rateLimit({
     message:
     "Easy there pal it's a t2 micro",
-    windowMs: 60 * 60 * 1000, // 15 minutes
+    windowMs: 60 * 60 * 1000, // 60 minutes
     max: 500
   });
 
