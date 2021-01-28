@@ -77,6 +77,13 @@ router.get("/postids", (req, res) => {
     .catch(err => console.log(err))
 })
 
+router.get("/boardnames", (req, res) => {
+    Board.getBoardNames()
+    .then(boards => res.status(200).json({boards: boards.map(board => board.board_name)}))
+    .catch(err => console.log(err))
+})
+
+
 router.get("/monthlyzaddrs", (req, res) => {
     Board.getMonthlyZaddrs()
 .then(zaddrs => res.status(200).json({ zaddrs: zaddrs.map( zaddr => zaddr.reply_zaddr ) /* smoke em if you got em */ }))
