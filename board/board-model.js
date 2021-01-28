@@ -26,6 +26,8 @@ module.exports = {
 }
 
 function getSubBoard(board_name) {
+    if (!board_name) return
+    board_name = board_name.toLowerCase()
     return db("board_posts").where({board_name})
 }
 
@@ -144,7 +146,7 @@ async function add(post) {
         }
 
         if (post.memo.match(boardRegex)) {
-            const boardName = post.memo.match(boardRegex)[0].split("::")[1] && post.memo.match(boardRegex)[0].split("::")[1].toLowerCase()
+            const boardName = post.memo.match(boardRegex)[0].split("::")[1].toLowerCase()
 
             if (boardName) post.board_name = boardName;
         }
