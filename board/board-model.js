@@ -1,8 +1,8 @@
 const { whereNull } = require("../data/db-config.js");
 const db = require("../data/db-config.js");
-const likeRegex = /LIKE( *):( *):( *)(\d+)/i
+const likeRegex = /LIKE::(\d+)/i
 const replyRegex = /REPLY::(\d+)/i
-const boardRegex = /BOARD( *):( *):( *)(\w+)/i
+const boardRegex = /BOARD:( *):( *)(\w+)/i
 const zaddrRegex = /zs[a-z0-9]{76}/i;
 const splitMemoRegex = /-\d+$/
 
@@ -123,7 +123,7 @@ async function add(post) {
     try {
         const decodedMemo = Buffer.from(post.memo, "base64").toString("utf8")
         if (likeRegex.test(decodedMemo)) {
-            post.memo = decodedMemo.match(likeRegex)[0].toLowerCase().replace(/[\\\/ ]/g, "")
+            post.memo = decodedMemo.match(likeRegex)[0]
         } 
 
         // const decodedBoardTag = Buffer.from(post.memo.split(" ")[0], "base64").toString("utf8")
