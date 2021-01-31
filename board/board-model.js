@@ -141,6 +141,7 @@ async function add(post) {
     } catch (err) {
         console.log(err)
     }
+    if (post.memo.includes("drive.google")) return {error: "Google Drive Link Detected"}
 
     if (post.memo.match(likeRegex)) {
         const like = post.memo.match(likeRegex)[0]
