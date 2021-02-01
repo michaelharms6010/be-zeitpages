@@ -10,6 +10,10 @@ module.exports = {
 }
 
 async function add(user) {
+    const existingUser = users.where("username", "ilike", user.username).first()
+    if (existingUser) {
+        return {error: "User already exists."}
+    }
     return db('users').insert(user).returning("*")
 
 }
