@@ -10,7 +10,7 @@ module.exports = {
 }
 
 async function add(user) {
-    const existingUser = db('users').where("username", "ilike", user.username).first()
+    const existingUser = await db('users').where("username", "ilike", user.username).first()
     if (existingUser) {
         return {error: "User already exists."}
     }
