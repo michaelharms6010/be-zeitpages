@@ -13,6 +13,9 @@ router.post('/register',  (req, res) => {
   user.password = hash;
   Users.add(user)
     .then(saved => {
+      if (saved.error) {
+        res.status(400).json(saved)
+      }
       const newUser = saved[0]
     delete newUser.password;
     const token = generateToken(newUser);
