@@ -22,7 +22,7 @@ const SEARCHABLE_COLUMNS = ["username", "description", "twitter"]
 async function getReferralsLikes(userId) {
     const user = await db("users").where({id: userId}).first()
     console.log(user)
-    const usersReferred = await db("users").where("referrer", "ilike", user.username)
+    const usersReferred = await db("users").where("referrer", "ilike", 'luisxbt')
     if (usersReferred.length) {
         const referrals = await db("users").where("referrer", "ilike", 'luisxbt').join("board_posts", "board_posts.reply_zaddr", "users.zaddr").sum("board_posts.likes").groupBy("users.username")
         return referrals
