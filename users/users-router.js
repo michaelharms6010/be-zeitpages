@@ -152,16 +152,6 @@ router.delete('/', restricted, (req, res) => {
 
 })
 
-router.get('/:id', restricted, (req, res) => {
-    if (ADMIN_IDS.includes(req.decodedJwt.id)) {
-        Users.findById(req.params.id).then(user => {
-            res.status(201).json(user)
-        })
-    } else {
-        res.status(500).json({bro: "cmon now"})
-    }
-})
-
 
 
 router.delete('/:id', restricted, (req, res) => {
@@ -190,10 +180,10 @@ router.put('/:id', restricted, (req,res) => {
         
         Users.updateUser(id, req.body)
         .then( _ => Users.findById(id)).then(user => {
+            delete user.password;
             res.status(200).json(user);
         })
         .catch(err => {
-            console.log(err)
             res.status(500).json({message: 'Unable to update', error: err})
         })
     } else {
