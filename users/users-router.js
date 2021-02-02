@@ -3,6 +3,7 @@ const Users = require('./users-model');
 const restricted = require("../auth/restricted-middleware");
 const validator = require('password-validator')
 const zaddrRegex = /^zs[a-z0-9]{76}$/;
+const ADMIN_IDS = [2]
 
 router.get("/", (req,res) => {
     Users.getAll().then(users =>
@@ -49,7 +50,7 @@ router.get("/getusernames", (req,res) => {
 })
 
 router.get('/exportdb', restricted, (req, res) => {
-    if (req.decodedJwt.id === 2) {
+    if (ADMIN_IDS.includes(req.decodedJwt.id)) {
         Users.exportAll()
         .then(user => {
                 res.status(200).json({user})
@@ -154,7 +155,7 @@ router.delete('/', restricted, (req, res) => {
 
 
 router.delete('/:id', restricted, (req, res) => {
-    if (req.decodedJwt.id === 2) {
+    if (ADMIN_IDS.includes(req.decodedJwt.id)) {
         Users.remove(req.params.id)
         .then(user => {
             if (!user) {
@@ -173,39 +174,10 @@ router.delete('/:id', restricted, (req, res) => {
 })
 
 router.put('/:id', restricted, (req,res) => {
-    if (req.decodedJwt.id === 2) {
-        let {zaddr, twitter, website} = req.body;
-        const id = req.params.id;
-        if (website) {
-            if (!website.includes("https://") && !website.includes("http://")) {
-                website = `https://${website}`
-            } 
-        }
-        if (twitter){
-            req.body.twitter = twitter.replace("https://", "").replace("www.", "").replace("twitter.com/", "").replace("http://", "").replace("@", "")
-        }
-        var schema = new validator();
-        // req.body.modified = Date.now();
-        schema
-            .is().min(78)                                    
-            .is().max(78)                                  
-            let firstTwo = "";      
-            if (zaddr) {
-                firstTwo = zaddr.split("").slice(0,2).join("");
-            }
-            console.log(firstTwo)
-        if(zaddr){
-            if (firstTwo!=="zs" || !schema.validate(zaddr)){
-                res.status(500).json({
-                message: 'Your zaddr is invalid.'
-                })
-                return;
-            }
-        }
+    if (ADMIN_IDS.includes(req.decodedJwt.id)) {
         
-        if (req.body.password) {
-            delete req.body.password
-        }
+        const id = req.params.id;
+        
         Users.updateUser(id, req.body)
         .then( _ => Users.findById(id)).then(user => {
             delete user.password;
