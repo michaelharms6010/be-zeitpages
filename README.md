@@ -16,4 +16,6 @@ It's rate-limited but I think it's pretty generous at >100 requests/hr. Please b
 | GET /board      | Returns all board posts |
 | GET /board/\<id\>      | Retrieves a single post |
 | GET /board/leaderboard      | Returns most liked posts |
+| GET /board/payableposts | Returns like count, grouped by zaddr | 
+| GET /board/likecount | Get total number of likes for the whole board |
 
