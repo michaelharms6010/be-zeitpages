@@ -35,6 +35,12 @@ router.get("/me", restricted, (req,res) => {
     })
 })
 
+router.get("/myreferrals", restricted, (req,res) => {
+    Users.getReferralsLikes(req.decodedJwt.id).then(referrals => {
+        res.status(201).json(referrals)
+    })
+})
+
 router.get("/getusernames", (req,res) => {
     Users.getUsernames().then(user => {
         delete user.password;

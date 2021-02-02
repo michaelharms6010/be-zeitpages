@@ -11,12 +11,21 @@ module.exports = {
     search,
     getCount,
     getUsernames,
-    exportAll
+    exportAll,
+    getReferralsLikes
 }
+
 
 const SEARCHABLE_COLUMNS = ["username", "description", "twitter"]
 // rudeboy stylee
 // for tomorrow .whereRaw('LOWER(column) LIKE ?', '%'+value.toLowerCase()+'%');
+async function getReferralsLikes(userId) {
+    const user = db("users").where({id: userId}).first()
+    const referrals = db("users").where("referral", "ilike", user.username).join("board_posts", "board_posts.username", "users.username").select("users.username", "users.zaddr").sum('likes').groupBy("users.username")
+    return referrals
+
+
+}
 const getSearchPerms = (query, searchString, colNames) => {
      colNames.forEach(colName => {
         // query = query.orWhere(db.raw(`LOWER(description) LIKE ?'`, '%'+searchString.toLowerCase()+'%'));
