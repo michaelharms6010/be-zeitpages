@@ -24,7 +24,7 @@ async function getReferralsLikes(userId) {
     console.log(user)
     const usersReferred = await db("users").where("referrer", "ilike", user.username)
     if (usersReferred.length) {
-        const referrals = await db("users").where("referrer", "ilike", user.username).join("board_posts", "board_posts.reply_zaddr", "users.zaddr").sum("board_posts.likes").groupBy("users.username")
+        const referrals = await db("users").where("referrer", "ilike", 'luisxbt').join("board_posts", "board_posts.reply_zaddr", "users.zaddr").sum("board_posts.likes").groupBy("users.username")
         return referrals
     } else {
         return {message: "You don't have any referrals yet."}
