@@ -21,7 +21,7 @@ const SEARCHABLE_COLUMNS = ["username", "description", "twitter"]
 // for tomorrow .whereRaw('LOWER(column) LIKE ?', '%'+value.toLowerCase()+'%');
 async function getReferralsLikes(userId) {
     const user = db("users").where({id: userId}).first()
-    const referrals = db("users").where("referral", "ilike", user.username).join("board_posts", "board_posts.username", "users.username").select("users.username", "users.zaddr").sum('likes').groupBy("users.username")
+    const referrals = db("users").where("referral", "ilike", user.username).join("board_posts", "board_posts.username", "users.username").groupBy("users.username")
     return referrals
 
 
