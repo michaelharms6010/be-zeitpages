@@ -29,7 +29,7 @@ module.exports = {
 }
 
 async function getUsersPosts(username) {
-    const user = db("users").where("username", "ilike", username).first()
+    const user = await db("users").where("username", "ilike", username).first()
     return db("board_posts").where("reply_zaddr", "=", user.zaddr)
 }
 
