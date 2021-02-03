@@ -30,6 +30,12 @@ router.get("/z/:boardname", (req,res) => {
     .catch(err => res.status(500).json(err))
 })
 
+router.get("/u/:username", (req,res) => {
+    Board.getUsersPosts(req.params.username).then(posts =>
+        res.status(200).json({posts}))
+    .catch(err => res.status(500).json(err))
+})
+
 router.get("/pinned", (req,res) => {
     Board.getPinned().then(pinned =>
         res.status(200).json(pinned))

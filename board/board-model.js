@@ -24,7 +24,13 @@ module.exports = {
     getPostIds,
     getSubBoard,
     updatePost,
-    getBoardNames
+    getBoardNames,
+    getUsersPosts
+}
+
+async function getUsersPosts(username) {
+    const user = db("users").where("username", "ilike", username).first()
+    return db("board_posts").where("reply_zaddr", "=", user.zaddr)
 }
 
 function updatePost(id,changes ) {
