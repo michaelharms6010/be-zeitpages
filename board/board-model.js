@@ -30,7 +30,7 @@ module.exports = {
 
 async function getUsersPosts(username) {
     const user = await db("users").where("username", "ilike", username).first()
-    return db("board_posts").where("reply_zaddr", "=", user.zaddr)
+    return db("board_posts").where("reply_zaddr", "=", user.zaddr).orderBy("id", "desc")
 }
 
 function updatePost(id,changes ) {
