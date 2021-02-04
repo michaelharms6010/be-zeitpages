@@ -4,7 +4,7 @@ module.exports = async () => {
     try {
         const Feed  = require('feed')
         var fs      = require('fs');
-        var dirPath = __dirname + "/rssfeed.xml";
+        var dirPath = __dirname + "/rssfeed.txt";
 
     let feed = new Feed({
 
@@ -57,7 +57,7 @@ module.exports = async () => {
                     console.log("I think we wrote a file\n\n\n\n")
                 }
             });
-
+            console.log(__dirname)
             return "Done"
       })
     } catch (err) {

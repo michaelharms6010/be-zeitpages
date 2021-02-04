@@ -26,7 +26,8 @@ router.get("/count", (req,res) => {
 })
 
 router.get("/feed", (req, res) => {
-    res.sendFile('../rssfeed.xml', { root: __dirname })
+    console.log(__dirname)
+    res.sendFile('../rssfeed.txt', { root: __dirname })
 })
 
 router.get("/genfeed", (req,res) => {
