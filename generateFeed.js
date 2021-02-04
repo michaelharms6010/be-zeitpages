@@ -26,14 +26,8 @@ module.exports = async () => {
                 link:"https://zecpages.com/z/post/" + post.id,
   
                 description: post.memo,
-  
-                author: [{
-  
-                  name: post.username || 'A Zcash User',
-                  link: `https://zecpages.com/${post.username}`
-                  
-  
-                }],
+
+                title: "Post " + post.id,
   
                 date: new Date(+post.datetime),
   
