@@ -17,7 +17,7 @@ module.exports = async () => {
       
       })
 
-      db("board_posts").leftJoin("users", "users.zaddr", "board_posts.reply_zaddr").orderBy("id", "desc").limit(300).select("board_posts.*", "users.username").then(posts => {
+      db("board_posts").leftJoin("users", "users.zaddr", "board_posts.reply_zaddr").orderBy("id", "desc").limit(100).select("board_posts.*", "users.username").then(posts => {
           console.log(posts[0])
           posts.forEach(post => {
             feed.addItem({
@@ -25,7 +25,7 @@ module.exports = async () => {
   
                 link:"https://zecpages.com/z/post/" + post.id,
   
-                description: post.memo,
+                description: post.memo.slice(0,50),
   
                 author: [{
   
