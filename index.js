@@ -36,6 +36,7 @@ server.use("/users", dataLimiter, usersRouter);
 server.use("/auth", authLimiter, authRouter);
 server.use("/board", dataLimiter, boardRouter);
 
+generateFeed();
 setInterval(_ => generateFeed(), (1000 * 60 * 5))
 
 const port = process.env.PORT || 5000;
