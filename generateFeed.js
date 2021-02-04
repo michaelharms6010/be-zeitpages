@@ -2,7 +2,7 @@ const db = require("./data/db-config")
 
 module.exports = async () => {
     try {
-        const Feed  = require('feed')
+        const { Feed }  = require('feed')
         var fs      = require('fs');
         var dirPath = __dirname + "/rssfeed.txt";
 
