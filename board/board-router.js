@@ -4,6 +4,7 @@ const restricted = require("../auth/restricted-middleware");
 var Pusher = require('pusher');
 const db = require('../data/db-config');
 const zaddrRegex = /zs[a-z0-9]{76}/i;
+const generateFeed = require("../generateFeed.js");
 var pusher = new Pusher({
     appId: process.env.PUSHER_APPID,
     key: process.env.PUSHER_KEY,
@@ -21,6 +22,12 @@ router.get("/", (req,res) => {
 router.get("/count", (req,res) => {
     Board.getCount().then(count =>
         res.status(200).json(count[0].CNT))
+    .catch(err => res.status(500).json(err))
+})
+
+router.get("/testfeed", (req,res) => {
+    generateFeed().then(r =>
+        res.status(200).json({message: "maybe it worked"}))
     .catch(err => res.status(500).json(err))
 })
 
