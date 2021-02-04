@@ -4,7 +4,7 @@ module.exports = async () => {
     try {
         const { Feed }  = require('feed')
         var fs      = require('fs');
-        var dirPath = __dirname + "/rssfeed.txt";
+        var dirPath = __dirname + "/rssfeed.xml";
 
     let feed = new Feed({
 
