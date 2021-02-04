@@ -59,7 +59,12 @@ function getPostsWithZaddr() {
 }
 
 async function findById(id) {
-    const replies = await db("board_posts").where({"reply_to_post" : id}).orderBy("datetime", "desc")
+    const replies = await db("board_posts")
+                            .where({"reply_to_post" : id})
+                            .leftJoin("users", "board_posts.reply_zaddr", "users.zaddr")
+                            .select("board_posts.*", "users.username")
+                            .orderBy("datetime", "desc")
+                            
     const post = await db('board_posts').leftJoin("users", "board_posts.reply_zaddr", "users.zaddr")
         .where({"board_posts.id": id}).select("board_posts.*", "users.username")
         .first()
