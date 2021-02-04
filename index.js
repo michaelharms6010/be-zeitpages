@@ -4,6 +4,7 @@ const cors = require("cors");
 const helmet = require("helmet");
 const morgan = require("morgan");
 const rateLimit = require("express-rate-limit");
+const generateFeed = require("./generateFeed")
 
 const dataLimiter = rateLimit({
     message:
@@ -22,7 +23,8 @@ const dataLimiter = rateLimit({
 
 const usersRouter = require("./users/users-router.js")
 const authRouter = require("./auth/auth-router.js");
-const boardRouter = require("./board/board-router.js")
+const boardRouter = require("./board/board-router.js");
+const generateFeed = require("./generateFeed.js");
 
 const server = express();
 
@@ -35,7 +37,7 @@ server.use("/users", dataLimiter, usersRouter);
 server.use("/auth", authLimiter, authRouter);
 server.use("/board", dataLimiter, boardRouter);
 
-
+setInterval(_ => generateFeed(), (1000 * 60 * 5))
 
 const port = process.env.PORT || 5000;
 
