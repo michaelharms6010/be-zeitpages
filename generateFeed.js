@@ -1,10 +1,10 @@
 const db = require("./data/db-config")
 
-module.exports = () => {
+module.exports = async () => {
     try {
-    const Feed  = require('feed')
-    var fs      = require('fs');
-    var dirPath = __dirname + "/rssfeed.xml";
+        const Feed  = require('feed')
+        var fs      = require('fs');
+        var dirPath = __dirname + "/rssfeed.xml";
 
     let feed = new Feed({
 
@@ -58,7 +58,7 @@ module.exports = () => {
                 }
             });
 
-
+            return "Done"
       })
     } catch (err) {
         console.log(err)
