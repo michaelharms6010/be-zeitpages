@@ -39,7 +39,7 @@ module.exports = async () => {
   
                 }],
   
-                date: post.datetime,
+                date: new Date(post.datetime),
   
               });
 
