@@ -25,7 +25,7 @@ module.exports = async () => {
   
                 link:"https://zecpages.com/z/post/" + post.id,
   
-                description: post.memo,
+                description: post.memo.replace("BOARD::", "z/").replace("REPLY::", "Reply to "),
 
                 title: "Post " + post.id,
   
