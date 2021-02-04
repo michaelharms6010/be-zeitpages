@@ -25,7 +25,11 @@ router.get("/count", (req,res) => {
     .catch(err => res.status(500).json(err))
 })
 
-router.get("/testfeed", (req,res) => {
+router.get("/feed", (req, res) => {
+    res.sendFile('../rssfeed.xml', { root: __dirname })
+})
+
+router.get("/genfeed", (req,res) => {
     generateFeed().then(r =>
         res.status(200).json({message: "maybe it worked"}))
     .catch(err => res.status(500).json(err))
