@@ -25,7 +25,7 @@ router.get("/count", (req,res) => {
     .catch(err => res.status(500).json(err))
 })
 
-router.get("/feed", (req, res) => {
+router.get("/rss", (req, res) => {
     console.log(__dirname)
     res.sendFile('./rssfeed.xml', { root: "/var/app/current" })
 })
