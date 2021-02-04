@@ -30,12 +30,6 @@ router.get("/rss", (req, res) => {
     res.sendFile('./rssfeed.xml', { root: "/var/app/current" })
 })
 
-// router.get("/genfeed", (req,res) => {
-//     generateFeed().then(r =>
-//         res.status(200).json({message: "maybe it worked"}))
-//     .catch(err => res.status(500).json(err))
-// })
-
 router.get("/z/:boardname", (req,res) => {
     Board.getSubBoard(req.params.boardname).then(board =>
         res.status(200).json({board}))
