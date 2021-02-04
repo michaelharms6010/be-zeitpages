@@ -24,7 +24,6 @@ const dataLimiter = rateLimit({
 const usersRouter = require("./users/users-router.js")
 const authRouter = require("./auth/auth-router.js");
 const boardRouter = require("./board/board-router.js");
-const generateFeed = require("./generateFeed.js");
 
 const server = express();
 
