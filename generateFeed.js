@@ -11,18 +11,14 @@ module.exports = async () => {
         title: 'ZECpages',
       
         description: 'Zcash Encrypted Memo Board',
-      
-        author: {
-      
-          name: 'A Zcash User',
-      
-          link: 'http://zecpages.com/'
-      
-        }
+
+        link: 'http://zecpages.com/'
+
       
       })
 
-      db("board_posts").leftJoin("users", "users.zaddr", "board_posts.reply_zaddr").then(posts => {
+      db("board_posts").leftJoin("users", "users.zaddr", "board_posts.reply_zaddr").select("board_posts.*", "users.username").then(posts => {
+          console.log(posts[0])
           posts.forEach(post => {
             feed.addItem({
 
@@ -39,7 +35,7 @@ module.exports = async () => {
   
                 }],
   
-                date: new Date(post.datetime),
+                date: new Date(+post.datetime),
   
               });
 
