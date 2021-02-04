@@ -25,7 +25,7 @@ module.exports = async () => {
   
                 link:"https://zecpages.com/z/post/" + post.id,
   
-                description: post.memo.slice(0,50),
+                description: post.memo,
   
                 author: [{
   
