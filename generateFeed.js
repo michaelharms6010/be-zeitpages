@@ -1,5 +1,22 @@
 const db = require("./data/db-config")
 
+function formatMemo(str) {
+    const boardRegex = /BOARD::(\w+) /
+    const replyRegex = /REPLY::(\d+) /
+    const boardMatch = str.match(boardRegex)
+    const replyMatch = str.match(replyRegex)
+    if (boardMatch) {
+      const boardName = boardMatch[0].split("::")[1]
+      str = str.replace(boardRegex, `Posted to z/${boardName.trim()}:\n`)
+    }
+      if (replyMatch) {
+      const replyName = replyMatch[0].split("::")[1]
+      str = str.replace(replyRegex, `Reply to post ${replyName.trim()}:\n`)
+    }
+  
+    return str
+}
+
 module.exports = async () => {
     try {
         const { Feed }  = require('feed')
@@ -21,11 +38,10 @@ module.exports = async () => {
           console.log(posts[0])
           posts.forEach(post => {
             feed.addItem({
-
   
                 link:"https://zecpages.com/z/post/" + post.id,
   
-                description: post.memo.replace("BOARD::", "z/").replace("REPLY::", "Reply to "),
+                description: formatMemo(post.memo),
 
                 title: "Post " + post.id,
   
