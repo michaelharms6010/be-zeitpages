@@ -47,6 +47,11 @@ router.get("/pinned", (req,res) => {
         res.status(200).json(pinned))
     .catch(err => res.status(500).json(err))
 })
+router.get("/decayedpinned", (req,res) => {
+    Board.getDecayedPinned().then(pinned =>
+        res.status(200).json({pinnedposts: pinned}))
+    .catch(err => res.status(500).json(err))
+})
 
 router.get("/dailylikes", (req,res) => {
     Board.getDaysLikes().then(likes =>

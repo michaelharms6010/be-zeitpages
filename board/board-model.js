@@ -25,7 +25,8 @@ module.exports = {
     getSubBoard,
     updatePost,
     getBoardNames,
-    getUsersPosts
+    getUsersPosts,
+    getDecayedPinned
 }
 
 async function getUsersPosts(username) {
@@ -114,6 +115,12 @@ function getBoardNames() {
 
 function getPinned() {
     return db('board_posts').where("datetime", ">", 1607810569).andWhere('amount', ">=", '10000000').orderBy("amount", "desc").first()
+}
+
+async function getDecayedPinned() {
+    const posts = await db('board_posts').where("datetime", ">", 1607810569).andWhere('amount', ">=", '10000000').orderBy("amount", "desc")
+    const postsWithAdjustedPrice = posts.map( post => { return {...post, decayed_amount: Math.round(post.amount - ( Date.now() - +post.datetime ) / 100) } } )
+    return postsWithAdjustedPrice.sort((a,b) => a.decayed_amount - b.decayed_amount )
 }
 
 function getPage(page) {
