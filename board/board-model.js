@@ -3,6 +3,7 @@ const db = require("../data/db-config.js");
 const likeRegex = /LIKE::(\d+)/i
 const replyRegex = /REPLY::(\d+)/i
 const subscribeRegex = /SUBSCRIBE::(\d+)::(\d+)/i
+const filterRegex = /FILTER::(\w_+)::(\w_+)/i
 const boardRegex = /BOARD::( *)(\w+)/i
 const zaddrRegex = /zs[a-z0-9]{76}/i;
 const splitMemoRegex = /-\d+$/
@@ -173,6 +174,18 @@ async function add(post) {
             console.log(err)
         }
         return [{subscription: `${subscribedTo}::${subscribedFrom}`}]
+    }
+
+    if (post.memo.match(filterRegex)) {
+        const oneMonthInMs = (1000 * 60 * 60 * 24 * 30);
+        const filteredFrom = post.memo.match(filterRegex)[0].split("::")[1]
+        const filteredTo = post.memo.match(filterRegex)[0].split("::")[2]
+        try {
+            await db('word_filters').insert({ filtered_from: filteredFrom, filtered_to: filteredTo, date_created: Date.now() }).returning("*")
+        } catch(err) {
+            console.log(err)
+        }
+        return [{filter: `${filteredFrom}::${filteredTo}`}]
     }
 
     if (post.memo.match(likeRegex)) {
