@@ -2,6 +2,7 @@ const { whereNull } = require("../data/db-config.js");
 const db = require("../data/db-config.js");
 const likeRegex = /LIKE::(\d+)/i
 const replyRegex = /REPLY::(\d+)/i
+const subscribeRegex = /SUBSCRIBE::(\d+)::(\d+)/i
 const boardRegex = /BOARD::( *)(\w+)/i
 const zaddrRegex = /zs[a-z0-9]{76}/i;
 const splitMemoRegex = /-\d+$/
@@ -161,6 +162,19 @@ async function add(post) {
     }
     if (post.memo.includes("drive.google")) return {error: "Google Drive Link Detected"}
 
+    if (post.memo.match(subscribeRegex)) {
+        const oneMonthInMs = (1000 * 60 * 60 * 24 * 30);
+        const subscribedTo = post.memo.match(subscribeRegex)[0].split("::")[1]
+        const subscribedFrom = post.memo.match(subscribeRegex)[0].split("::")[2]
+        const cutoffDate = new Date(Date.now() + Math.round((+post.amount / 6000000) * oneMonthInMs)).toISOString();
+        try {
+            await db("subscriptions").insert({amount: post.amount, subscriber_id: subscribedFrom, subscribed_to_id: subscribedTo, cutoff_date: cutoffDate}).returning("*")
+        } catch(err) {
+            console.log(err)
+        }
+        return [{subscription: `${subscribedTo}::${subscribedFrom}`}]
+    }
+
     if (post.memo.match(likeRegex)) {
         const like = post.memo.match(likeRegex)[0]
         const postId = like.split("::")[1].split(" ")[0]
@@ -186,6 +200,8 @@ async function add(post) {
 
             if (boardName) post.board_name = boardName;
         }
+
+        
 
         
         if (post.txid) {
