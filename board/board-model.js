@@ -188,15 +188,16 @@ async function add(post) {
                     const newCutoff = new Date(existingCutoff.getTime() + purchasedTime)
                     await db("subscriptions")
                     .where({subscriber_id: subscribedFrom, subscribed_to_id: subscribedTo})
-                    .update({cutoff_date: newCutoff, amount: +existingCutoff.amount + post.amount }).returning("*")
+                    .update({cutoff_date: newCutoff, amount: +existingSubscription.amount + +post.amount }).returning("*")
                 } else {
                     await db("subscriptions")
                     .where({subscriber_id: subscribedFrom, subscribed_to_id: subscribedTo})
-                    .update({cutoff_date: cutoffDateFromToday, amount: +existingCutoff.amount + post.amount }).returning("*")
+                    .update({cutoff_date: cutoffDateFromToday, amount: +existingSubscription.amount + +post.amount }).returning("*")
                 }
             }
         } catch(err) {
             console.log(err)
+            
         }
         return [{subscription: `${subscribedTo}::${subscribedFrom}`}]
     }
