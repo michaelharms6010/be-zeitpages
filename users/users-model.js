@@ -14,7 +14,13 @@ module.exports = {
     exportAll,
     getReferralsLikes,
     getSubcriptionInfo,
-    getSubscriberZaddrs
+    getSubscriberZaddrs,
+    saveArticle
+}
+
+function saveArticle(memo, author_id) {
+    return db("published_content").insert({memo, author_id}).returning("*")
+    
 }
 
 

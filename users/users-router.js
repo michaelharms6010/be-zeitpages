@@ -35,9 +35,11 @@ router.post("/publish", (req, res) => {
     Users.getSubscriberZaddrs(req.decodedJwt.id)
         .then(zaddrs => {
             if (zaddrs.length) {
-                axios.post("https://othernodeapp", {memo, zaddrs})
+                Users.saveArticle(memo, req.decodedJwt.id).then(r => {
+                    axios.post("https://othernodeapp", {memo, zaddrs})
+                    res.status(200).json({message: "Publishing..."})
+                }).catch(err => console.log(err))
             }
-            res.status(200).json({message: "Publishing..."})
         })
         .catch(err => res.status(500).json(err))
 })
