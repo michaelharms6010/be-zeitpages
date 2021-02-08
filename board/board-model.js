@@ -138,6 +138,8 @@ function getLikeCount() {
 }
 
 
+
+
 async function add(post) {
 
     try {
@@ -171,6 +173,20 @@ async function add(post) {
         const cutoffDateFromToday = new Date(Date.now() + purchasedTime).toISOString();
         const existingSubscription = await db("subscriptions").where({subscriber_id: subscribedFrom, subscribed_to_id: subsribedTo}).first();
         try {
+
+            // Daily Job On New Box:
+            // Load db of paid subscription info (amountpaid)
+            // New endpoint - get all subscription info grouped by subscribed_to, sum amount
+            // Pay any users with new subscribers Math.floor(5/6 * (amount - amountpaid))
+
+            // node app on new box
+            // one endpoint, only open to zp BE
+            // node uses jwt to get author id,
+            // If author has subs, get the subs
+            // hits new box with memo, array of subscriber's zaddrs,
+            // Sends memo to all 
+
+
             if (!existingSubscription) {
                 await db("subscriptions").insert({amount: post.amount, subscriber_id: subscribedFrom, subscribed_to_id: subscribedTo, cutoff_date: cutoffDateFromToday}).returning("*")
             } else {

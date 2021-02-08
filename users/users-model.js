@@ -12,9 +12,14 @@ module.exports = {
     getCount,
     getUsernames,
     exportAll,
-    getReferralsLikes
+    getReferralsLikes,
+    getSubcriptionInfo
 }
 
+
+function getSubcriptionInfo() {
+    return db("subscriptions").sum("amount as amount").groupBy("subscribed_to").select("*")
+}
 
 const SEARCHABLE_COLUMNS = ["username", "description", "twitter"]
 // rudeboy stylee

@@ -29,7 +29,20 @@ router.get("/zaddr/:zaddr", (req, res) => {
     .catch(err => res.status(500).json({err}))
 })
 
+router.get("/getsubinfo", (req, res) => {
+    Users.getSubcriptionInfo()
+        .then(r => res.status(200).json(r))
+        .catch(err => res.status(500).json(err))
+})
+
 router.get("/me", restricted, (req,res) => {
+    Users.findById(req.decodedJwt.id).then(user => {
+        delete user.password;
+        res.status(201).json(user)
+    })
+})
+
+router.get("/getsubinfo", restricted, (req,res) => {
     Users.findById(req.decodedJwt.id).then(user => {
         delete user.password;
         res.status(201).json(user)
