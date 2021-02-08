@@ -167,9 +167,25 @@ async function add(post) {
         const oneMonthInMs = (1000 * 60 * 60 * 24 * 30);
         const subscribedTo = post.memo.match(subscribeRegex)[0].split("::")[1]
         const subscribedFrom = post.memo.match(subscribeRegex)[0].split("::")[2]
-        const cutoffDate = new Date(Date.now() + Math.round((+post.amount / 6000000) * oneMonthInMs)).toISOString();
+        const purchasedTime = Math.round((+post.amount / 6000000) * oneMonthInMs);
+        const cutoffDateFromToday = new Date(Date.now() + purchasedTime).toISOString();
+        const existingSubscription = await db("subscriptions").where({subscriber_id: subscribedFrom, subscribed_to_id: subsribedTo}).first();
         try {
-            await db("subscriptions").insert({amount: post.amount, subscriber_id: subscribedFrom, subscribed_to_id: subscribedTo, cutoff_date: cutoffDate}).returning("*")
+            if (!existingSubscription) {
+                await db("subscriptions").insert({amount: post.amount, subscriber_id: subscribedFrom, subscribed_to_id: subscribedTo, cutoff_date: cutoffDateFromToday}).returning("*")
+            } else {
+                const existingCutoff = new Date(existingSubscription.cutoff_date)
+                if (existingCutoff > new Date()) {
+                    const newCutoff = new Date(existingCutoff.getTime() + purchasedTime)
+                    await db("subscriptions")
+                    .where({subscriber_id: subscribedFrom, subscribed_to_id: subscribedTo})
+                    .update({cutoff_date: newCutoff, amount: +existingCutoff.amount + post.amount }).returning("*")
+                } else {
+                    await db("subscriptions")
+                    .where({subscriber_id: subscribedFrom, subscribed_to_id: subscribedTo})
+                    .update({cutoff_date: cutoffDateFromToday, amount: +existingCutoff.amount + post.amount }).returning("*")
+                }
+            }
         } catch(err) {
             console.log(err)
         }
