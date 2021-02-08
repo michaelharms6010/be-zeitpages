@@ -179,19 +179,12 @@ async function add(post) {
             // New endpoint - get all subscription info grouped by subscribed_to, sum amount
             // Pay any users with new subscribers Math.floor(5/6 * (amount - amountpaid))
 
-            // node app on new box
-            // one endpoint, only open to zp BE
-            // node uses jwt to get author id,
-            // If author has subs, get the subs
-            // hits new box with memo, array of subscriber's zaddrs,
-            // Sends memo to all 
-
 
             if (!existingSubscription) {
                 await db("subscriptions").insert({amount: post.amount, subscriber_id: subscribedFrom, subscribed_to_id: subscribedTo, cutoff_date: cutoffDateFromToday}).returning("*")
             } else {
                 const existingCutoff = new Date(existingSubscription.cutoff_date)
-                if (existingCutoff > new Date()) {
+                if (existingCutoff.getTime() > new Date().now()) {
                     const newCutoff = new Date(existingCutoff.getTime() + purchasedTime)
                     await db("subscriptions")
                     .where({subscriber_id: subscribedFrom, subscribed_to_id: subscribedTo})
@@ -209,7 +202,6 @@ async function add(post) {
     }
 
     if (post.memo.match(filterRegex)) {
-        const oneMonthInMs = (1000 * 60 * 60 * 24 * 30);
         const filteredFrom = post.memo.match(filterRegex)[0].split("::")[1]
         const filteredTo = post.memo.match(filterRegex)[0].split("::")[2]
         try {
