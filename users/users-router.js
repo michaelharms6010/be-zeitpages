@@ -66,13 +66,6 @@ router.get("/me", restricted, (req,res) => {
     })
 })
 
-router.get("/getsubinfo", restricted, (req,res) => {
-    Users.findById(req.decodedJwt.id).then(user => {
-        delete user.password;
-        res.status(201).json(user)
-    })
-})
-
 router.get("/myreferrals", restricted, (req,res) => {
     Users.getReferralsLikes(req.decodedJwt.id).then(referrals => {
         res.status(201).json(referrals)
