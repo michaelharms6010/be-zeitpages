@@ -1,7 +1,8 @@
 const router = require('express').Router();
 const Users = require('./users-model');
 const restricted = require("../auth/restricted-middleware");
-const validator = require('password-validator')
+const validator = require('password-validator');
+const { default: axios } = require('axios');
 const zaddrRegex = /^zs[a-z0-9]{76}$/;
 const ADMIN_IDS = [2]
 
@@ -27,6 +28,18 @@ router.get("/zaddr/:zaddr", (req, res) => {
     Users.findBy({zaddr})
     .then(r => res.status(200).json(r))
     .catch(err => res.status(500).json({err}))
+})
+
+router.post("/publish", (req, res) => {
+    const {memo} = req.body;
+    Users.getSubscriberZaddrs(req.decodedJwt.id)
+        .then(zaddrs => {
+            if (zaddrs.length) {
+                axios.post("https://othernodeapp", {memo, zaddrs})
+            }
+            res.status(200).json({message: "Publishing..."})
+        })
+        .catch(err => res.status(500).json(err))
 })
 
 router.get("/getsubinfo", (req, res) => {

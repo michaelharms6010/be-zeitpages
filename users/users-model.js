@@ -13,12 +13,17 @@ module.exports = {
     getUsernames,
     exportAll,
     getReferralsLikes,
-    getSubcriptionInfo
+    getSubcriptionInfo,
+    getSubscriberZaddrs
 }
 
 
 function getSubcriptionInfo() {
     return db("subscriptions").sum("amount as amount").groupBy("subscribed_to").select("*")
+}
+
+function getSubscriberZaddrs(subscribed_to_id) {
+    return db("subscriptions").where({subscribed_to_id}).join("users", "subscriptions.subscriber_id", "users.id").select("users.zaddr")
 }
 
 const SEARCHABLE_COLUMNS = ["username", "description", "twitter"]
