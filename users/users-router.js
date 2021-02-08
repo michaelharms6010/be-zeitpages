@@ -1,7 +1,8 @@
 const router = require('express').Router();
 const Users = require('./users-model');
 const restricted = require("../auth/restricted-middleware");
-const validator = require('password-validator')
+const validator = require('password-validator');
+const axios = require('axios');
 const zaddrRegex = /^zs[a-z0-9]{76}$/;
 const ADMIN_IDS = [2]
 
@@ -29,7 +30,43 @@ router.get("/zaddr/:zaddr", (req, res) => {
     .catch(err => res.status(500).json({err}))
 })
 
+router.get("/getsubs", restricted, (req, res) => {
+    
+    Users.getSubscribers(req.decodedJwt.id)
+    .then(r => res.status(200).json(r))
+    .catch(err => res.status(500).json({err}))
+})
+
+router.post("/publish", restricted, (req, res) => {
+    const {memo} = req.body;
+    const author_id = req.decodedJwt.id;
+    Users.getSubscribers(author_id)
+        .then(subscribers => {
+            const zaddrs = subscribers.map(sub => sub.zaddr);
+            if (zaddrs.length) {
+                Users.saveArticle(memo, author_id).then(r => {
+                    axios.post("http://3.139.195.111:6677/", {memo, zaddrs})
+                    res.status(200).json({message: "Publishing..."})
+                }).catch(err => console.log(err))
+            }
+        })
+        .catch(err => res.status(500).json(err))
+})
+
+router.get("/getsubinfo", (req, res) => {
+    Users.getSubcriptionInfo()
+        .then(r => res.status(200).json(r))
+        .catch(err => res.status(500).json(err))
+})
+
 router.get("/me", restricted, (req,res) => {
+    Users.findById(req.decodedJwt.id).then(user => {
+        delete user.password;
+        res.status(201).json(user)
+    })
+})
+
+router.get("/getsubinfo", restricted, (req,res) => {
     Users.findById(req.decodedJwt.id).then(user => {
         delete user.password;
         res.status(201).json(user)

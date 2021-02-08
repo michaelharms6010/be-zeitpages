@@ -2,6 +2,8 @@ const { whereNull } = require("../data/db-config.js");
 const db = require("../data/db-config.js");
 const likeRegex = /LIKE::(\d+)/i
 const replyRegex = /REPLY::(\d+)/i
+const subscribeRegex = /SUBSCRIBE::(\d+)::(\d+)/i
+const filterRegex = /FILTER::(\w_+)::(\w_+)/i
 const boardRegex = /BOARD::( *)(\w+)/i
 const zaddrRegex = /zs[a-z0-9]{76}/i;
 const splitMemoRegex = /-\d+$/
@@ -136,6 +138,8 @@ function getLikeCount() {
 }
 
 
+
+
 async function add(post) {
 
     try {
@@ -160,6 +164,61 @@ async function add(post) {
         console.log(err)
     }
     if (post.memo.includes("drive.google")) return {error: "Google Drive Link Detected"}
+
+    if (post.memo.match(subscribeRegex)) {
+        const oneMonthInMs = (1000 * 60 * 60 * 24 * 30);
+        const subscribedTo = post.memo.match(subscribeRegex)[0].split("::")[1]
+        const subscribedFrom = post.memo.match(subscribeRegex)[0].split("::")[2]
+        const purchasedTime = Math.round((+post.amount / 6000000) * oneMonthInMs);
+        const cutoffDateFromToday = new Date(Date.now() + purchasedTime).toISOString();
+        const existingSubscription = await db("subscriptions").where({subscriber_id: subscribedFrom, subscribed_to_id: subsribedTo}).first();
+        try {
+
+            // Daily Job On New Box:
+            // Load db of paid subscription info (amountpaid)
+            // New endpoint - get all subscription info grouped by subscribed_to, sum amount
+            // Pay any users with new subscribers Math.floor(5/6 * (amount - amountpaid))
+
+            // node app on new box
+            // one endpoint, only open to zp BE
+            // node uses jwt to get author id,
+            // If author has subs, get the subs
+            // hits new box with memo, array of subscriber's zaddrs,
+            // Sends memo to all 
+
+
+            if (!existingSubscription) {
+                await db("subscriptions").insert({amount: post.amount, subscriber_id: subscribedFrom, subscribed_to_id: subscribedTo, cutoff_date: cutoffDateFromToday}).returning("*")
+            } else {
+                const existingCutoff = new Date(existingSubscription.cutoff_date)
+                if (existingCutoff > new Date()) {
+                    const newCutoff = new Date(existingCutoff.getTime() + purchasedTime)
+                    await db("subscriptions")
+                    .where({subscriber_id: subscribedFrom, subscribed_to_id: subscribedTo})
+                    .update({cutoff_date: newCutoff, amount: +existingCutoff.amount + post.amount }).returning("*")
+                } else {
+                    await db("subscriptions")
+                    .where({subscriber_id: subscribedFrom, subscribed_to_id: subscribedTo})
+                    .update({cutoff_date: cutoffDateFromToday, amount: +existingCutoff.amount + post.amount }).returning("*")
+                }
+            }
+        } catch(err) {
+            console.log(err)
+        }
+        return [{subscription: `${subscribedTo}::${subscribedFrom}`}]
+    }
+
+    if (post.memo.match(filterRegex)) {
+        const oneMonthInMs = (1000 * 60 * 60 * 24 * 30);
+        const filteredFrom = post.memo.match(filterRegex)[0].split("::")[1]
+        const filteredTo = post.memo.match(filterRegex)[0].split("::")[2]
+        try {
+            await db('word_filters').insert({ filtered_from: filteredFrom, filtered_to: filteredTo, date_created: Date.now() }).returning("*")
+        } catch(err) {
+            console.log(err)
+        }
+        return [{filter: `${filteredFrom}::${filteredTo}`}]
+    }
 
     if (post.memo.match(likeRegex)) {
         const like = post.memo.match(likeRegex)[0]
@@ -186,6 +245,8 @@ async function add(post) {
 
             if (boardName) post.board_name = boardName;
         }
+
+        
 
         
         if (post.txid) {
