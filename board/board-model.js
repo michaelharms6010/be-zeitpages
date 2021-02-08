@@ -6,6 +6,15 @@ const boardRegex = /BOARD::( *)(\w+)/i
 const zaddrRegex = /zs[a-z0-9]{76}/i;
 const splitMemoRegex = /-\d+$/
 
+var Twitter = require('twitter');
+ 
+var client = new Twitter({
+  consumer_key: process.env.TWITTER_CONSUMER_KEY,
+  consumer_secret: process.env.TWITTER_SECRET,
+  access_token_key: process.env.TWITTER_ACCESS_KEY,
+  access_token_secret: process.env.TWITTER_ACCESS_SECRET
+});
+
 module.exports = {
     getAll,
     getPage,
@@ -199,8 +208,23 @@ async function add(post) {
             }
 
         }
+        
 
-        return db('board_posts').insert(post).returning("*")
+        const newPost = await db('board_posts').insert(post).returning("*")
+        
+        try {
+            const postPreview = "New ZECpages post: \n" + post.memo.slice(0,220) + `\n See it at zecpages.com/z/post/${newPost.id}`
+            client.post('statuses/update', {status: postPreview }, function(error, tweets, response) {
+                console.log(error)
+              if (!error) {
+                console.log(tweets);
+              }
+            });
+        } catch (err) {
+            console.log(err)
+        }
+        
+        return newPost
     }
 }
 

@@ -29,6 +29,7 @@
     "morgan": "^1.9.1",
     "password-validator": "^5.0.3",
     "pg": "^7.18.1",
-    "pusher": "^3.0.0"
+    "pusher": "^3.0.0",
+    "twitter": "^1.7.1"
   }
 }
