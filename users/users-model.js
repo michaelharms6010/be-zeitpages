@@ -41,7 +41,7 @@ function getSubcriptionInfo() {
 }
 
 function getSubscriptions(subscriber_id) {
-    return db("subscriptions").where({subscriber_id}).join("users", "subscriptions.subscriber_id", "users.id").select("users.username", "subscriptions.amount", "subscriptions.cutoff_date", "users.zaddr")
+    return db("subscriptions").where({subscriber_id}).join("users", "subscriptions.subscribed_to_id", "users.id").select("users.username", "subscriptions.amount", "subscriptions.cutoff_date", "users.zaddr")
 }
 
 function getSubscribers(subscribed_to_id) {
