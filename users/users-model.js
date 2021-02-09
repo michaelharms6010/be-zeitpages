@@ -15,7 +15,8 @@ module.exports = {
     getReferralsLikes,
     getSubcriptionInfo,
     getSubscribers,
-    saveArticle
+    saveArticle,
+    getSubscriptions
 }
 
 function saveArticle(memo, author_id) {
@@ -28,8 +29,12 @@ function getSubcriptionInfo() {
     return db("subscriptions").sum("amount as amount").groupBy("subscribed_to").select("*")
 }
 
+function getSubscriptions(subscriber_id) {
+    return db("subscriptions").where({subscriber_id}).join("users", "subscriptions.subscriber_id", "users.id").select("users.username", "subscriptions.amount", "subscriptions.cutoff_date", "users.zaddr")
+}
+
 function getSubscribers(subscribed_to_id) {
-    return db("subscriptions").where({subscribed_to_id}).join("users", "subscriptions.subscriber_id", "users.id").select("users.username", "subscriptions.amount", "subscriptions.cutoff_date", "users.zaddr")
+    return db("subscriptions").where({subscribed_to_id}).join("users", "subscriptions.subscriber_id", "users.id").where("subscriptions.cutoff_date", ">", Date.now()).select("users.username", "subscriptions.amount", "subscriptions.cutoff_date", "users.zaddr")
 }
 
 const SEARCHABLE_COLUMNS = ["username", "description", "twitter"]
