@@ -114,6 +114,17 @@ router.get('/exportdb', restricted, (req, res) => {
     }
 })
 
+router.get("/allsubscriptions", restricted, (req,res) => {
+    if (ADMIN_IDS.includes(req.decodedJwt.id)) {
+        db("subscriptions")
+        .then(subs => res.status(200).json({subs}))
+        .catch(err => res.status(500).json({err}))
+
+    } else {
+        res.status(401).json({bruh: "bruh"})
+    }
+})
+
 
 router.get(/^\/(.+).json$/, (req, res) => {
     const username = req.params[0];
@@ -202,16 +213,7 @@ router.delete('/', restricted, (req, res) => {
 
 })
 
-router.get("/allsubscriptions", restricted, (req,res) => {
-    if (ADMIN_IDS.includes(req.decodedJwt.id)) {
-        db("subscriptions")
-        .then(subs => res.status(200).json({subs}))
-        .catch(err => res.status(500).json({err}))
 
-    } else {
-        res.status(401).json({bruh: "bruh"})
-    }
-})
 
 
 
