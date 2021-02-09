@@ -37,6 +37,13 @@ router.get("/getsubs", restricted, (req, res) => {
     .catch(err => res.status(500).json({err}))
 })
 
+router.get("/getsubscriptions", restricted, (req, res) => {
+    
+    Users.getSubscriptions(req.decodedJwt.id)
+    .then(r => res.status(200).json(r))
+    .catch(err => res.status(500).json({err}))
+})
+
 router.post("/publish", restricted, (req, res) => {
     const {memo} = req.body;
     const author_id = req.decodedJwt.id;
