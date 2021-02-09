@@ -171,7 +171,7 @@ async function add(post) {
         const subscribedFrom = post.memo.match(subscribeRegex)[0].split("::")[2]
         const purchasedTime = Math.round((+post.amount / 6000000) * oneMonthInMs);
         const cutoffDateFromToday = new Date(Date.now() + purchasedTime).toISOString();
-        const existingSubscription = await db("subscriptions").where({subscriber_id: subscribedFrom, subscribed_to_id: subsribedTo}).first();
+        const existingSubscription = await db("subscriptions").where({subscriber_id: subscribedFrom, subscribed_to_id: subscribedTo}).first();
         try {
 
             // Daily Job On New Box:
@@ -197,7 +197,7 @@ async function add(post) {
             }
         } catch(err) {
             console.log(err)
-            
+
         }
         return [{subscription: `${subscribedTo}::${subscribedFrom}`}]
     }
