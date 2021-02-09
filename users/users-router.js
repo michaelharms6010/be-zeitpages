@@ -42,7 +42,7 @@ router.post("/publish", restricted, (req, res) => {
     const author_id = req.decodedJwt.id;
     Users.getSubscribers(author_id)
         .then(subscribers => {
-            const zaddrs = subscribers.map(sub => sub.zaddr);
+            const zaddrs = subscribers.filter(sub => sub.zaddr).map(sub => sub.zaddr);
             if (zaddrs.length) {
                 Users.saveArticle(memo, author_id).then(r => {
                     axios.post("http://3.139.195.111:6677/", {memo, zaddrs})
