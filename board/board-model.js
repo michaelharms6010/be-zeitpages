@@ -213,7 +213,7 @@ async function add(post) {
         const newPost = await db('board_posts').insert(post).returning("*")
         
         try {
-            const postPreview = "New ZECpages post: \n" + post.memo.slice(0,220).replace(boardRegex, "").replace(replyRegex, "").trim() + `\n See it at zecpages.com/z/post/${newPost.id}`
+            const postPreview = "New ZECpages post: \n" + post.memo.slice(0,220).trim() + `\n See it at zecpages.com/z/post/${newPost.id}`
             client.post('statuses/update', {status: postPreview }, function(error, tweets, response) {
                 console.log(error)
               if (!error) {
