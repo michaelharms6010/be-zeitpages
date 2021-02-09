@@ -86,6 +86,12 @@ router.get("/me", restricted, (req,res) => {
     })
 })
 
+router.get("/lastarticle", restricted, (req,res) => {
+    Users.getLastArticle(req.decodedJwt.id).then(article =>
+    res.status(200).json({article}))
+    .catch(err => res.status(500).json({err}))
+})
+
 router.get("/myreferrals", restricted, (req,res) => {
     Users.getReferralsLikes(req.decodedJwt.id).then(referrals => {
         res.status(201).json(referrals)

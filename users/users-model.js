@@ -17,12 +17,16 @@ module.exports = {
     getSubscribers,
     saveArticle,
     getSubscriptions,
-    checkIfCanPublish
+    checkIfCanPublish,
+    getLastArticle
 }
 
 function saveArticle(memo, author_id) {
     return db("published_content").insert({memo, author_id}).returning("*")
     
+}
+function getLastArticle(author_id) {
+    return db("published_content").where({author_id}).orderBy("date_created", "desc").first()
 }
 
 async function checkIfCanPublish(author_id) {
