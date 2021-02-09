@@ -267,7 +267,7 @@ async function add(post) {
         const newPost = await db('board_posts').insert(post).returning("*")
         
         try {
-            const postPreview = "New ZECpages post: \n\n" + post.memo.slice(0,220).replace(/board::([\w_]+)/i, "").replace(/reply::(\d+)/i, "").trim() + `\n\nzecpages.com/z/post/${newPost[0].id}`
+            const postPreview = post.memo.slice(0,240).replace(/board::([\w_]+)/i, "").replace(/reply::(\d+)/i, "").trim() + `\n\nzecpages.com/z/post/${newPost[0].id}`
             client.post('statuses/update', {status: postPreview }, function(error, tweets, response) {
                 console.log(error)
               if (!error) {
