@@ -178,6 +178,9 @@ async function add(post) {
         const oneMonthInMs = (1000 * 60 * 60 * 24 * 30);
         const subscribedTo = post.memo.match(subscribeRegex)[0].split("::")[1]
         const subscribedFrom = post.memo.match(subscribeRegex)[0].split("::")[2]
+        if (+post.amount < 5000000) {
+            return  [{subscription: `Insufficient Funds`}]
+        }
         const purchasedTime = Math.round((+post.amount / 6000000) * oneMonthInMs);
         const cutoffDateFromToday = new Date(Date.now() + purchasedTime).toISOString();
         const existingSubscription = await db("subscriptions").where({subscriber_id: subscribedFrom, subscribed_to_id: subscribedTo}).first();
