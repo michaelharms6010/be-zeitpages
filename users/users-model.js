@@ -16,12 +16,23 @@ module.exports = {
     getSubcriptionInfo,
     getSubscribers,
     saveArticle,
-    getSubscriptions
+    getSubscriptions,
+    checkIfCanPublish
 }
 
 function saveArticle(memo, author_id) {
     return db("published_content").insert({memo, author_id}).returning("*")
     
+}
+
+async function checkIfCanPublish(author_id) {
+    const newestPost = await db("published_content").where({author_id}).orderBy("date_created", "desc").first()
+    const fourHoursInMs = (1000 * 60 * 60 * 4)
+    if (newestPost && (Date.now() - new Date(newestPost.date_created).getTime()) < fourHoursInMs) {
+        return false
+    } else {
+        return true
+    }
 }
 
 

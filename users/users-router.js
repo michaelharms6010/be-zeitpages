@@ -5,6 +5,8 @@ const validator = require('password-validator');
 const axios = require('axios');
 const zaddrRegex = /^zs[a-z0-9]{76}$/;
 const ADMIN_IDS = [2]
+const db = require("../data/db-config")
+
 
 router.get("/", (req,res) => {
     Users.getAll().then(users =>
@@ -44,10 +46,16 @@ router.get("/getsubscriptions", restricted, (req, res) => {
     .catch(err => res.status(500).json({err}))
 })
 
-router.post("/publish", restricted, (req, res) => {
+router.post("/publish", restricted, async (req, res) => {
     const {memo} = req.body;
     const author_id = req.decodedJwt.id;
     const key= process.env.PUBLISHING_KEY;
+    const canPublish = await Users.checkIfCanPublish(author_id)
+    // if (!canPublish) {
+    //     res.status(200).json({message: "You can publish to your subscribers once every four hours."})
+    //     return
+    // }
+
     Users.getSubscribers(author_id)
         .then(subscribers => {
             const zaddrs = subscribers.filter(sub => sub.zaddr).map(sub => sub.zaddr);
@@ -192,6 +200,17 @@ router.delete('/', restricted, (req, res) => {
             res.status(500).json(err)
         })
 
+})
+
+router.get("/allsubscriptions", restricted, (req,res) => {
+    if (ADMIN_IDS.includes(req.decodedJwt.id)) {
+        db("subscriptions")
+        .then(subs => res.status(200).json({subs}))
+        .catch(err => res.status(500).json({err}))
+
+    } else {
+        res.status(401).json({bruh: "bruh"})
+    }
 })
 
 
