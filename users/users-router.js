@@ -40,13 +40,18 @@ router.get("/getsubs", restricted, (req, res) => {
 router.post("/publish", restricted, (req, res) => {
     const {memo} = req.body;
     const author_id = req.decodedJwt.id;
+    const key= process.env.PUBLISHING_KEY;
     Users.getSubscribers(author_id)
         .then(subscribers => {
             const zaddrs = subscribers.filter(sub => sub.zaddr).map(sub => sub.zaddr);
             if (zaddrs.length) {
                 Users.saveArticle(memo, author_id).then(r => {
-                    axios.post("http://3.139.195.111:6677/", {memo, zaddrs})
-                    res.status(200).json({message: "Publishing..."})
+                    axios.post("http://3.139.195.111:6677/", {memo, zaddrs, key})
+                    .then(r => {
+                        console.log(r)
+                        res.status(200).json({message: "Publishing..."})
+                    })
+                    .catch(err => {console.log(err) ; res.status(500).json({err})})
                 }).catch(err => console.log(err))
             }
         })
