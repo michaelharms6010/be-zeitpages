@@ -51,10 +51,10 @@ router.post("/publish", restricted, async (req, res) => {
     const author_id = req.decodedJwt.id;
     const key= process.env.PUBLISHING_KEY;
     const canPublish = await Users.checkIfCanPublish(author_id)
-    // if (!canPublish) {
-    //     res.status(200).json({message: "You can publish to your subscribers once every four hours."})
-    //     return
-    // }
+    if (!canPublish) {
+        res.status(200).json({message: "You can publish to your subscribers once every four hours."})
+        return
+    }
 
     Users.getSubscribers(author_id)
         .then(subscribers => {

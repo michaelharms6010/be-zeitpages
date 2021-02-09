@@ -31,8 +31,8 @@ function getLastArticle(author_id) {
 
 async function checkIfCanPublish(author_id) {
     const newestPost = await db("published_content").where({author_id}).orderBy("date_created", "desc").first()
-    const fourHoursInMs = (1000 * 60 * 60 * 4)
-    if (newestPost && (Date.now() - new Date(newestPost.date_created).getTime()) < fourHoursInMs) {
+    const twoHoursInMs = (1000 * 60 * 60 * 2)
+    if (newestPost && (Date.now() - new Date(newestPost.date_created).getTime()) < twoHoursInMs) {
         return false
     } else {
         return true
