@@ -20,7 +20,7 @@ module.exports = {
     checkIfCanPublish,
     getLastArticle,
     getUserSubscriptionTotals,
-    getAllPUblished
+    getAllPublished
 }
 
 function saveArticle(memo, author_id) {
