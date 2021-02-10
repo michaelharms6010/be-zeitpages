@@ -50,7 +50,7 @@ function getSubscriptions(subscriber_id) {
 }
 
 function getUserSubscriptionTotals() {
-    return db("subscriptions").join("users", "subscriptions.subscribed_to_id", "users.id").sum("subscriptions.amount as amount").groupBy("users.zaddr").select("users.zaddr, users.username, users.id")
+    return db("subscriptions").join("users", "subscriptions.subscribed_to_id", "users.id").select("*")
 }
 
 function getSubscribers(subscribed_to_id) {
