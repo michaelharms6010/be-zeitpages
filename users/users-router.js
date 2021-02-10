@@ -60,7 +60,15 @@ router.get("/getsubs", restricted, (req, res) => {
     .catch(err => res.status(500).json({err}))
 })
 
-
+router.get("/allpublished", restricted, (req, res) => {
+    if (ADMIN_IDS.includes(req.decodedJwt.id)) {
+        Users.getAllPublished()
+        .then(r => res.status(200).json(r))
+        .catch(err => res.status(500).json({err}))
+    } else {
+        res.status(500).json({bro: "cmon now"})
+    }
+})
 
 
 router.post("/publish", restricted, async (req, res) => {

@@ -19,7 +19,8 @@ module.exports = {
     getSubscriptions,
     checkIfCanPublish,
     getLastArticle,
-    getUserSubscriptionTotals
+    getUserSubscriptionTotals,
+    getAllPUblished
 }
 
 function saveArticle(memo, author_id) {
@@ -28,6 +29,10 @@ function saveArticle(memo, author_id) {
 }
 function getLastArticle(author_id) {
     return db("published_content").where({author_id}).orderBy("date_created", "desc").first()
+}
+
+function getAllPublished() {
+    return db("published_content")
 }
 
 async function checkIfCanPublish(author_id) {
