@@ -32,12 +32,6 @@ router.get("/zaddr/:zaddr", (req, res) => {
     .catch(err => res.status(500).json({err}))
 })
 
-router.get("/getsubs", restricted, (req, res) => {
-    
-    Users.getSubscribers(req.decodedJwt.id)
-    .then(r => res.status(200).json(r))
-    .catch(err => res.status(500).json({err}))
-})
 
 router.get("/getsubscriptiontotals", restricted, (req, res) => {
 
@@ -58,6 +52,16 @@ router.get("/getsubscriptions", restricted, (req, res) => {
     .then(r => res.status(200).json(r))
     .catch(err => res.status(500).json({err}))
 })
+
+router.get("/getsubs", restricted, (req, res) => {
+    
+    Users.getSubscribers(req.decodedJwt.id)
+    .then(r => res.status(200).json(r))
+    .catch(err => res.status(500).json({err}))
+})
+
+
+
 
 router.post("/publish", restricted, async (req, res) => {
     const {memo} = req.body;
