@@ -69,21 +69,26 @@ router.post("/publish", restricted, async (req, res) => {
     const key= process.env.PUBLISHING_KEY;
     const canPublish = await Users.checkIfCanPublish(author_id)
     if (!canPublish) {
+        
         res.status(200).json({message: "You can publish to your subscribers once every four hours."})
         return
     }
 
     Users.getSubscribers(author_id)
         .then(subscribers => {
+
             const zaddrs = subscribers.filter(sub => sub).filter(sub => sub.zaddr).map(sub => sub.zaddr);
             if (zaddrs.length) {
-                Users.saveArticle(memo, author_id).then(r => {
-                    axios.post("http://3.139.195.111:6677/", {memo, zaddrs, key})
-                    .then(r => {
-                        console.log(r)
-                        res.status(200).json({message: "Publishing..."})
-                    })
-                    .catch(err => {console.log(err) ; res.status(500).json({err})})
+                Users.findById(author_id).then(user => { 
+                    zaddrs.push(user.zaddr)
+                    Users.saveArticle(memo, author_id).then(r => {
+                        axios.post("http://3.139.195.111:6677/", {memo, zaddrs, key})
+                        .then(r => {
+                            console.log(r)
+                            res.status(200).json({message: "Publishing..."})
+                        })
+                        .catch(err => {console.log(err) ; res.status(500).json({err})})
+                    }).catch(err => console.log(err))
                 }).catch(err => console.log(err))
             }
         })
