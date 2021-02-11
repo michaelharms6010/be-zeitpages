@@ -281,7 +281,7 @@ async function add(post) {
                     tooLong = true
                 }
             })
-            postTextForTweet = `"${newPostText.join(" ")}${tooLong? "..." : ""}"`
+            postTextForTweet = `"${newPostText.join(" ").trim()}${tooLong? "..." : ""}"`
             const postPreview = postTextForTweet.replace(/board::([\w_]+)/i, "").replace(/reply::(\d+)/i, "").trim() + `\n\nzecpages.com/z/post/${newPost[0].id}`
             client.post('statuses/update', {status: postPreview }, function(error, tweets, response) {
                 console.log(error)
