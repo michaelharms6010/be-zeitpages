@@ -281,6 +281,10 @@ async function add(post) {
                     tooLong = true
                 }
             })
+            newPostText[0] = newPostText[0].trim()
+            console.log("first char: ", newPostText[0].charCodeAt(0))
+            if (newPostText[0].charCodeAt(1)) console.log("second char: ", newPostText[0].charCodeAt(1))
+            if (newPostText[0].charCodeAt(2)) console.log("third char: ", newPostText[0].charCodeAt(2))
             postTextForTweet = `"${newPostText.join(" ").trim()}${tooLong? "..." : ""}"`
             const postPreview = postTextForTweet.replace(/board::([\w_]+)/i, "").replace(/reply::(\d+)/i, "").trim() + `\n\nzecpages.com/z/post/${newPost[0].id}`
             client.post('statuses/update', {status: postPreview }, function(error, tweets, response) {
