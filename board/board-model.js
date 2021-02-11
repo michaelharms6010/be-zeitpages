@@ -281,7 +281,7 @@ async function add(post) {
                     tooLong = true
                 }
             })
-            newPostText[0] = newPostText[0].trim()
+            newPostText[0] = newPostText[0].replace(/ /g, "")
             console.log("first char: ", newPostText[0].charCodeAt(0))
             if (newPostText[0].charCodeAt(1)) console.log("second char: ", newPostText[0].charCodeAt(1))
             if (newPostText[0].charCodeAt(2)) console.log("third char: ", newPostText[0].charCodeAt(2))
@@ -290,7 +290,8 @@ async function add(post) {
             client.post('statuses/update', {status: postPreview }, function(error, tweets, response) {
                 console.log(error)
               if (!error) {
-                console.log(tweets);
+                  console.log("sent tweet")
+                // console.log(tweets);
               }
             });
         } catch (err) {
