@@ -196,7 +196,7 @@ async function add(post) {
                 await db("subscriptions").insert({amount: post.amount, subscriber_id: subscribedFrom, subscribed_to_id: subscribedTo, cutoff_date: cutoffDateFromToday}).returning("*")
             } else {
                 const existingCutoff = new Date(existingSubscription.cutoff_date)
-                if (existingCutoff.getTime() > new Date().now()) {
+                if (existingCutoff.getTime() > Date().now()) {
                     const newCutoff = new Date(existingCutoff.getTime() + purchasedTime)
                     await db("subscriptions")
                     .where({subscriber_id: subscribedFrom, subscribed_to_id: subscribedTo})
