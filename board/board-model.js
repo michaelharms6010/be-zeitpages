@@ -270,7 +270,19 @@ async function add(post) {
         const newPost = await db('board_posts').insert(post).returning("*")
         
         try {
-            const postPreview = post.memo.slice(0,240).replace(/board::([\w_]+)/i, "").replace(/reply::(\d+)/i, "").trim() + `\n\nzecpages.com/z/post/${newPost[0].id}`
+            let newPostText = []
+            let postTextForTweet = ""
+            let tooLong = false
+            post.memo.split(" ").forEach(word => {
+                if (word.length + postTextForTweet.length < 240) {
+                    postTextForTweet += word + " "
+                    newPostText.push(word)
+                } else {
+                    tooLong = true
+                }
+            })
+            postTextForTweet = `"${newPostText.join(" ")}${tooLong? "..." : ""}"`
+            const postPreview = postTextForTweet.replace(/board::([\w_]+)/i, "").replace(/reply::(\d+)/i, "").trim() + `\n\nzecpages.com/z/post/${newPost[0].id}`
             client.post('statuses/update', {status: postPreview }, function(error, tweets, response) {
                 console.log(error)
               if (!error) {
