@@ -178,7 +178,10 @@ async function add(post) {
     if (post.memo.match(subscribeRegex)) {
         const oneMonthInMs = (1000 * 60 * 60 * 24 * 30);
         const subscribedTo = post.memo.match(subscribeRegex)[0].split("::")[1]
-        const subscribedFrom = post.memo.match(subscribeRegex)[0].split("::")[2]
+        let subscribedFrom = post.memo.match(subscribeRegex)[0].split("::")[2]
+        if (subscribedTo.trim() === subscribedFrom.trim() ) {
+            subscribedFrom = 2
+        }
         if (+post.amount < 5000000) {
             return  [{subscription: `Insufficient Funds`}]
         }
