@@ -282,7 +282,7 @@ async function add(post) {
                 let highlightedString = post.amount >= 10000000 ? "🚨🔥💎🛡💎🔥🚨\n" : ""
                 post.memo = post.memo.replace(/board::([\w_]+)( *)/i, "").replace(/reply::(\d+)( *)/i, "").trim()
                 post.memo.split(" ").forEach(word => {
-                    if (word.length + postTextForTweet.length < 230) {
+                    if (word.length + postTextForTweet.length < 210) {
                         postTextForTweet += word + " "
                         newPostText.push(word)
                     } else {
@@ -295,7 +295,7 @@ async function add(post) {
                 if (newPostText[0].charCodeAt(1)) console.log("second char: ", newPostText[0].charCodeAt(1))
                 if (newPostText[0].charCodeAt(2)) console.log("third char: ", newPostText[0].charCodeAt(2))
                 postTextForTweet = `"${highlightedString}${newPostText.join(" ").trim()}${tooLong? "..." : ""}"`
-                const postPreview = postTextForTweet + `\n\nzecpages.com/z/post/${newPost[0].id}`
+                const postPreview = postTextForTweet + `\n\nzecpages.com/z/post/${newPost[0].id} #Zcash $ZEC`
                 client.post('statuses/update', {status: postPreview }, function(error, tweets, response) {
                     console.log(error)
                 if (!error) {
