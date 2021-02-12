@@ -270,32 +270,35 @@ async function add(post) {
         const newPost = await db('board_posts').insert(post).returning("*")
         
         try {
-            let newPostText = []
-            let postTextForTweet = ""
-            let tooLong = false
-            post.memo = post.memo.replace(/board::([\w_]+)( *)/i, "").replace(/reply::(\d+)( *)/i, "").trim()
-            post.memo.split(" ").forEach(word => {
-                if (word.length + postTextForTweet.length < 240) {
-                    postTextForTweet += word + " "
-                    newPostText.push(word)
-                } else {
-                    tooLong = true
+            if (post.amount >= 1000000) {
+                let newPostText = []
+                let postTextForTweet = ""
+                let tooLong = false
+                let highlightedString = post.amount >= 10000000 ? "🚨🔥💎🛡💎🔥🚨\n" : ""
+                post.memo = post.memo.replace(/board::([\w_]+)( *)/i, "").replace(/reply::(\d+)( *)/i, "").trim()
+                post.memo.split(" ").forEach(word => {
+                    if (word.length + postTextForTweet.length < 230) {
+                        postTextForTweet += word + " "
+                        newPostText.push(word)
+                    } else {
+                        tooLong = true
+                    }
+                })
+                newPostText = newPostText.filter(word => word);
+                newPostText[0] = newPostText[0].replace(/ /g, "")
+                console.log("first char: ", newPostText[0].charCodeAt(0))
+                if (newPostText[0].charCodeAt(1)) console.log("second char: ", newPostText[0].charCodeAt(1))
+                if (newPostText[0].charCodeAt(2)) console.log("third char: ", newPostText[0].charCodeAt(2))
+                postTextForTweet = `"${highlightedString}${newPostText.join(" ").trim()}${tooLong? "..." : ""}"`
+                const postPreview = postTextForTweet + `\n\nzecpages.com/z/post/${newPost[0].id}`
+                client.post('statuses/update', {status: postPreview }, function(error, tweets, response) {
+                    console.log(error)
+                if (!error) {
+                    console.log("sent tweet")
+                    // console.log(tweets);
                 }
-            })
-            newPostText = newPostText.filter(word => word);
-            newPostText[0] = newPostText[0].replace(/ /g, "")
-            console.log("first char: ", newPostText[0].charCodeAt(0))
-            if (newPostText[0].charCodeAt(1)) console.log("second char: ", newPostText[0].charCodeAt(1))
-            if (newPostText[0].charCodeAt(2)) console.log("third char: ", newPostText[0].charCodeAt(2))
-            postTextForTweet = `"${newPostText.join(" ").trim()}${tooLong? "..." : ""}"`
-            const postPreview = postTextForTweet + `\n\nzecpages.com/z/post/${newPost[0].id}`
-            client.post('statuses/update', {status: postPreview }, function(error, tweets, response) {
-                console.log(error)
-              if (!error) {
-                  console.log("sent tweet")
-                // console.log(tweets);
-              }
-            });
+                });
+            }
         } catch (err) {
             console.log(err)
         }
