@@ -7,6 +7,7 @@ const filterRegex = /FILTER::(\w_+)::(\w_+)/i
 const boardRegex = /BOARD::( *)(\w+)/i
 const zaddrRegex = /zs[a-z0-9]{76}/i;
 const splitMemoRegex = /-\d+$/
+const urlRegex = /[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&\\=]*)/ig
 
 var Twitter = require('twitter');
 const twitterCreds = {
@@ -274,6 +275,7 @@ async function add(post) {
                 let newPostText = []
                 let postTextForTweet = ""
                 let tooLong = false
+                post.memo = post.memo.replace(urlRegex, "<Link>")
                 let highlightedString = post.amount >= 10000000 ? "🚨🔥💎🛡💎🔥🚨\n" : ""
                 post.memo = post.memo.replace(/board::([\w_]+)( *)/i, "").replace(/reply::(\d+)( *)/i, "").trim()
                 post.memo.split(" ").forEach(word => {
