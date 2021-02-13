@@ -100,6 +100,13 @@ router.get("/boardnames", (req, res) => {
     .catch(err => console.log(err))
 })
 
+router.get("/boardlist", (req, res) => {
+    Board.getBoardList()
+    .then(boards => res.status(200).json({boards}))
+    .catch(err => console.log(err))
+})
+
+
 
 router.get("/monthlyzaddrs", (req, res) => {
     Board.getMonthlyZaddrs()
@@ -112,6 +119,7 @@ router.get("/likecount", (req, res) => {
     .then(likes => res.status(200).json({likes}))
     .catch(err => console.log(err))
 })
+
 
 router.get("/:id", (req,res) => {
     const id = Number(req.params.id);

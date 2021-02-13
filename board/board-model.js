@@ -39,7 +39,8 @@ module.exports = {
     getBoardNames,
     getUsersPosts,
     getDecayedPinned,
-    searchPosts
+    searchPosts,
+    getBoardList
 }
 
 async function getUsersPosts(username) {
@@ -129,6 +130,11 @@ function getPostIds() {
 function getBoardNames() {
     return db("board_posts").distinct("board_name")
 }
+
+function getBoardList() {
+    return db("board_posts").whereNotNull("board_name").count("id as post_count").groupBy("board_name").orderBy("post_count")
+}
+
 
 function getPinned() {
     return db('board_posts').where("datetime", ">", 1607810569).andWhere('amount', ">=", '10000000').orderBy("amount", "desc").first()
