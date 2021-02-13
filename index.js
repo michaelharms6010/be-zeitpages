@@ -9,8 +9,8 @@ const generateFeed = require("./generateFeed")
 const dataLimiter = rateLimit({
     message:
     "Easy there pal it's a t2 micro",
-    windowMs: 1 * 60 * 1000, // 60 minutes
-    max: 100
+    windowMs: 15 * 60 * 1000, // 60 minutes
+    max: 1500
   });
 
   const authLimiter = rateLimit({
