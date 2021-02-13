@@ -1,5 +1,5 @@
 const db = require("../data/db-config.js");
-const TESTER_IDS = [2,5, 720]
+const TESTER_IDS = [2]
 
 module.exports = {
     getAll,
