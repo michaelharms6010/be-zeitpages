@@ -1,5 +1,6 @@
 const { whereNull } = require("../data/db-config.js");
 const db = require("../data/db-config.js");
+const Users = require("../users/users-model")
 const likeRegex = /LIKE::(\d+)/i
 const replyRegex = /REPLY::(\d+)/i
 const subscribeRegex = /SUBSCRIBE::(\d+)::(\d+)/i
