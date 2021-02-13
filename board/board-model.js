@@ -8,6 +8,9 @@ const boardRegex = /BOARD::( *)(\w+)/i
 const zaddrRegex = /zs[a-z0-9]{76}/i;
 const splitMemoRegex = /-\d+$/
 const urlRegex = /[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&\\=]*)/ig
+const axios = require("axios")
+const key= process.env.PUBLISHING_KEY;
+const ZECPAGES_ID = 769;
 
 var Twitter = require('twitter');
 const twitterCreds = {
@@ -283,6 +286,21 @@ async function add(post) {
         
 
         const newPost = await db('board_posts').insert(post).returning("*")
+
+        try {
+            const zpSubs = await Users.getSubscribers(ZECPAGES_ID)
+            if (zpSubs.length) {
+                const zpZaddrs = zpSubs.filter(sub => sub).filter(sub => sub.zaddr).map(sub => sub.zaddr);
+                    axios.post("http://3.139.195.111:6677/", {memo: post.memo, zaddrs: zpZaddrs, key})
+                        .then(r => {
+                            console.log(r)
+                        })
+                        .catch(err => {console.log(err)})
+            }
+        } catch (err) {
+            console.log(err)
+        }
+
         
         try {
             if (post.amount >= 1000000) {
