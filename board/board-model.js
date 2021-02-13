@@ -132,7 +132,7 @@ function getBoardNames() {
 }
 
 function getBoardList() {
-    return db("board_posts").whereNotNull("board_name").count("id as post_count").groupBy("board_name").orderBy("post_count")
+    return db("board_posts").whereNotNull("board_name").count("id as post_count").groupBy("board_name").orderBy("post_count", "desc").select("post_count", "board_name")
 }
 
 
