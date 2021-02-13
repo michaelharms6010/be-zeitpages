@@ -16,7 +16,7 @@ const dataLimiter = rateLimit({
   const authLimiter = rateLimit({
     message:
     "You are acting shady imo - can you plz chill a bit?",
-    windowMs: 15 * 60 * 1000, // 15 minutes
+    windowMs: 30 * 60 * 1000, // 15 minutes
     max: 25
   });
 

@@ -130,7 +130,7 @@ function getPinned() {
 }
 
 async function getDecayedPinned() {
-    const posts = await db('board_posts').leftJoin("users", "board_posts.reply_zaddr", "users.zaddr").where("datetime", ">", 1607810569).andWhere('amount', ">=", '10000000').orderBy("amount", "desc")
+    const posts = await db('board_posts').leftJoin("users", "board_posts.reply_zaddr", "users.zaddr").where("datetime", ">", 1607810569).andWhere('amount', ">=", '10000000').orderBy("amount", "desc").select("board_posts.*", "users.username")
     const postsWithAdjustedPrice = posts.map( post => { return {...post, decayed_amount: Math.round(post.amount - ( Date.now() - +post.datetime ) / 200) } } )
     return postsWithAdjustedPrice.sort((a,b) => b.decayed_amount - a.decayed_amount )[0]
 }
