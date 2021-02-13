@@ -60,7 +60,7 @@ function getUserSubscriptionTotals() {
 }
 
 function getSubscribers(subscribed_to_id) {
-    return db("subscriptions").where({subscribed_to_id}).join("users", "subscriptions.subscriber_id", "users.id").where("subscriptions.cutoff_date", ">", new Date().toISOString() ).select("users.username", "subscriptions.amount", "subscriptions.cutoff_date", "users.zaddr")
+    return db("subscriptions").where({subscribed_to_id}).leftJoin("users", "subscriptions.subscriber_id", "users.id").where("subscriptions.cutoff_date", ">", new Date().toISOString() ).select("users.username", "subscriptions.amount", "subscriptions.cutoff_date", "users.zaddr", "subscriptions.subscriber_zaddr")
 }
 
 const SEARCHABLE_COLUMNS = ["username", "description", "twitter"]

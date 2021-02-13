@@ -85,7 +85,7 @@ router.post("/publish", restricted, async (req, res) => {
     Users.getSubscribers(author_id)
         .then(subscribers => {
 
-            let zaddrs = subscribers.filter(sub => sub).filter(sub => sub.zaddr).map(sub => sub.zaddr);
+            let zaddrs = subscribers.filter(sub => sub).filter(sub => sub.zaddr || sub.subscriber_zaddr ).map(sub => sub.subscriber_zaddr || sub.zaddr);
             if (zaddrs.length) {
                 Users.findById(author_id).then(user => { 
                     zaddrs.push(user.zaddr)

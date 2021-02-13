@@ -191,7 +191,8 @@ async function add(post) {
     }
     if (post.memo.includes("drive.google")) return {error: "Google Drive Link Detected"}
 
-    if (post.memo.match(subscribeZaddrRegex)) {
+    if (post.memo.replace(/ /g, "").match(subscribeZaddrRegex)) {
+        post.memo = post.memo.replace(/ /g, "")
         const oneMonthInMs = (1000 * 60 * 60 * 24 * 30);
         const subscribedTo = post.memo.match(subscribeZaddrRegex)[0].split("::")[1]
         let subscribedFrom = post.memo.match(subscribeZaddrRegex)[0].split("::")[2]
@@ -226,7 +227,8 @@ async function add(post) {
 
         }
         return [{subscription: `${subscribedTo}::${subscribedFrom}`}]
-    } else if (post.memo.match(subscribeRegex)) {
+    } else if (post.memo.replace(/ /g, "").match(subscribeRegex)) {
+        post.memo = post.memo.replace(/ /g, "")
         const oneMonthInMs = (1000 * 60 * 60 * 24 * 30);
         const subscribedTo = post.memo.match(subscribeRegex)[0].split("::")[1]
         let subscribedFrom = post.memo.match(subscribeRegex)[0].split("::")[2]
@@ -274,7 +276,8 @@ async function add(post) {
         return [{filter: `${filteredFrom}::${filteredTo}`}]
     }
 
-    if (post.memo.match(likeRegex)) {
+    if (post.memo.replace(/ /g, "").match(likeRegex)) {
+        post.memo = post.memo.replace(/ /g, "");
         const like = post.memo.match(likeRegex)[0]
         const postId = like.split("::")[1].split(" ")[0]
         const likedPost = await db('board_posts').where({id: postId}).first()
@@ -321,7 +324,7 @@ async function add(post) {
         try {
             const zpSubs = await Users.getSubscribers(ZECPAGES_ID)
             if (zpSubs.length) {
-                const zpZaddrs = [ ...new Set( zpSubs.filter(sub => sub).filter(sub => sub.zaddr).map(sub => sub.zaddr) ) ];
+                const zpZaddrs = [ ...new Set( zpSubs.filter(sub => sub).filter(sub => sub.subscriber_zaddr || sub.zaddr).map(sub => sub.subscriber_zaddr || sub.zaddr) ) ];
                     axios.post("http://3.139.195.111:6677/", {memo: post.memo, zaddrs: zpZaddrs, key})
                         .then(r => {
                             console.log(r)
