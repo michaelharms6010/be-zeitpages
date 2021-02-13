@@ -38,7 +38,8 @@ module.exports = {
     updatePost,
     getBoardNames,
     getUsersPosts,
-    getDecayedPinned
+    getDecayedPinned,
+    searchPosts
 }
 
 async function getUsersPosts(username) {
@@ -111,6 +112,10 @@ async function getPayablePosts() {
 
 async function setReplyCount(id, reply_count) {
     return db("board_posts").where({id}).update({reply_count}).returning("*")
+}
+
+function searchPosts(str) {
+    return db("board_posts").where("memo", "ilike", `%${str}%`).limit(25).orderBy("id", "desc")
 }
 
 function getAll() {
