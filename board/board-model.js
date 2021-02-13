@@ -193,8 +193,8 @@ async function add(post) {
 
     if (post.memo.match(subscribeZaddrRegex)) {
         const oneMonthInMs = (1000 * 60 * 60 * 24 * 30);
-        const subscribedTo = post.memo.match(subscribeRegex)[0].split("::")[1]
-        let subscribedFrom = post.memo.match(subscribeRegex)[0].split("::")[2]
+        const subscribedTo = post.memo.match(subscribeZaddrRegex)[0].split("::")[1]
+        let subscribedFrom = post.memo.match(subscribeZaddrRegex)[0].split("::")[2]
         if (subscribedTo.trim() === subscribedFrom.trim() ) {
             subscribedFrom = 2
         }
