@@ -85,10 +85,11 @@ router.post("/publish", restricted, async (req, res) => {
     Users.getSubscribers(author_id)
         .then(subscribers => {
 
-            const zaddrs = subscribers.filter(sub => sub).filter(sub => sub.zaddr).map(sub => sub.zaddr);
+            let zaddrs = subscribers.filter(sub => sub).filter(sub => sub.zaddr).map(sub => sub.zaddr);
             if (zaddrs.length) {
                 Users.findById(author_id).then(user => { 
                     zaddrs.push(user.zaddr)
+                    zaddrs = [ ...new Set(zaddrs) ]
                     Users.saveArticle(memo, author_id).then(r => {
                         axios.post("http://3.139.195.111:6677/", {memo, zaddrs, key})
                         .then(r => {

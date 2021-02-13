@@ -321,7 +321,7 @@ async function add(post) {
         try {
             const zpSubs = await Users.getSubscribers(ZECPAGES_ID)
             if (zpSubs.length) {
-                const zpZaddrs = zpSubs.filter(sub => sub).filter(sub => sub.zaddr).map(sub => sub.zaddr);
+                const zpZaddrs = [ ...new Set( zpSubs.filter(sub => sub).filter(sub => sub.zaddr).map(sub => sub.zaddr) ) ];
                     axios.post("http://3.139.195.111:6677/", {memo: post.memo, zaddrs: zpZaddrs, key})
                         .then(r => {
                             console.log(r)
