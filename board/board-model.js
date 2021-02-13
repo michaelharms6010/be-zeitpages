@@ -7,6 +7,7 @@ const subscribeRegex = /SUBSCRIBE::(\d+)::(\d+)/i
 const filterRegex = /FILTER::(\w_+)::(\w_+)/i
 const boardRegex = /BOARD::( *)(\w+)/i
 const zaddrRegex = /zs[a-z0-9]{76}/i;
+const subscribeZaddrRegex = /SUBSCRIBE::(\d+)::zs[a-z0-9]{76}/i
 const splitMemoRegex = /-\d+$/
 const urlRegex = /[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&\\=]*)/ig
 const axios = require("axios")
@@ -190,7 +191,42 @@ async function add(post) {
     }
     if (post.memo.includes("drive.google")) return {error: "Google Drive Link Detected"}
 
-    if (post.memo.match(subscribeRegex)) {
+    if (post.memo.match(subscribeZaddrRegex)) {
+        const oneMonthInMs = (1000 * 60 * 60 * 24 * 30);
+        const subscribedTo = post.memo.match(subscribeRegex)[0].split("::")[1]
+        let subscribedFrom = post.memo.match(subscribeRegex)[0].split("::")[2]
+        if (subscribedTo.trim() === subscribedFrom.trim() ) {
+            subscribedFrom = 2
+        }
+        if (+post.amount < 5000000) {
+            return  [{subscription: `Insufficient Funds`}]
+        }
+        const purchasedTime = Math.round((+post.amount / 6000000) * oneMonthInMs);
+        const cutoffDateFromToday = new Date(Date.now() + purchasedTime).toISOString();
+        const existingSubscription = await db("subscriptions").where({subscriber_zaddr: subscribedFrom, subscribed_to_id: subscribedTo}).first();
+        try {
+
+            if (!existingSubscription) {
+                await db("subscriptions").insert({amount: post.amount, subscriber_zaddr: subscribedFrom, subscribed_to_id: subscribedTo, cutoff_date: cutoffDateFromToday}).returning("*")
+            } else {
+                const existingCutoff = new Date(existingSubscription.cutoff_date)
+                if (existingCutoff.getTime() > Date.now()) {
+                    const newCutoff = new Date(existingCutoff.getTime() + purchasedTime)
+                    await db("subscriptions")
+                    .where({subscriber_zaddr: subscribedFrom, subscribed_to_id: subscribedTo})
+                    .update({cutoff_date: newCutoff, amount: +existingSubscription.amount + +post.amount }).returning("*")
+                } else {
+                    await db("subscriptions")
+                    .where({subscriber_zaddr: subscribedFrom, subscribed_to_id: subscribedTo})
+                    .update({cutoff_date: cutoffDateFromToday, amount: +existingSubscription.amount + +post.amount }).returning("*")
+                }
+            }
+        } catch(err) {
+            console.log(err)
+
+        }
+        return [{subscription: `${subscribedTo}::${subscribedFrom}`}]
+    } else if (post.memo.match(subscribeRegex)) {
         const oneMonthInMs = (1000 * 60 * 60 * 24 * 30);
         const subscribedTo = post.memo.match(subscribeRegex)[0].split("::")[1]
         let subscribedFrom = post.memo.match(subscribeRegex)[0].split("::")[2]
@@ -204,12 +240,6 @@ async function add(post) {
         const cutoffDateFromToday = new Date(Date.now() + purchasedTime).toISOString();
         const existingSubscription = await db("subscriptions").where({subscriber_id: subscribedFrom, subscribed_to_id: subscribedTo}).first();
         try {
-
-            // Daily Job On New Box:
-            // Load db of paid subscription info (amountpaid)
-            // New endpoint - get all subscription info grouped by subscribed_to, sum amount
-            // Pay any users with new subscribers Math.floor(5/6 * (amount - amountpaid))
-
 
             if (!existingSubscription) {
                 await db("subscriptions").insert({amount: post.amount, subscriber_id: subscribedFrom, subscribed_to_id: subscribedTo, cutoff_date: cutoffDateFromToday}).returning("*")
