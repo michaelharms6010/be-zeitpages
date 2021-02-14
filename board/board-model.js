@@ -325,7 +325,7 @@ async function add(post) {
             const zpSubs = await Users.getSubscribers(ZECPAGES_ID)
             if (zpSubs.length) {
                 
-                post.memo = post.memo.replace(/\$/, "\\$")
+                post.memo = post.memo.replace(/\$/, "USD ")
                 const zpZaddrs = [ ...new Set( zpSubs.filter(sub => sub).filter(sub => sub.subscriber_zaddr || sub.zaddr).map(sub => sub.subscriber_zaddr || sub.zaddr) ) ];
                     axios.post("http://3.139.195.111:6677/", {memo: post.memo, zaddrs: zpZaddrs, key})
                         .then(r => {
