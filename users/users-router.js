@@ -77,7 +77,7 @@ router.post("/publish", restricted, async (req, res) => {
         res.status(500).json({error: "you need to provide a memo"})
         return
     }
-    memo = memo.replace(/\$/g, "\\$")
+    memo = memo.replace(/\$/g, "\\u0024")
     const author_id = req.decodedJwt.id;
     const key= process.env.PUBLISHING_KEY;
     const canPublish = await Users.checkIfCanPublish(author_id)
