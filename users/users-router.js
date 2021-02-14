@@ -72,8 +72,12 @@ router.get("/allpublished", restricted, (req, res) => {
 
 
 router.post("/publish", restricted, async (req, res) => {
-    const {memo} = req.body;
-    if (memo) memo = memo.replace(/\$/g, "\$")
+    let {memo} = req.body;
+    if (!memo) {
+        res.status(500).json({error: "you need to provide a memo"})
+        return
+    }
+    memo = memo.replace(/\$/g, "\$")
     const author_id = req.decodedJwt.id;
     const key= process.env.PUBLISHING_KEY;
     const canPublish = await Users.checkIfCanPublish(author_id)
