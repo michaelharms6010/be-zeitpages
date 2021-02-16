@@ -20,7 +20,7 @@ async function add(user) {
 }
 
 function findByUsername(username) {
-    return db("users").select('id', 'username', "zaddr", "proofposturl", "website", "twitter", "email", "description", "viewkey").where("username", "ilike", username).first()
+    return db("users").select("password", 'id', 'username', "zaddr", "proofposturl", "website", "twitter", "email", "description", "viewkey").where("username", "ilike", username).first()
 }
 
 function findBy(filter) {
