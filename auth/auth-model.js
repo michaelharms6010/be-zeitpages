@@ -5,7 +5,8 @@ module.exports = {
     getAll,
     findById,
     findBy,
-    remove
+    remove,
+    findByUsername
     
 }
 
@@ -16,6 +17,10 @@ async function add(user) {
     }
     return db('users').insert(user).returning("*")
 
+}
+
+function findByUsername(username) {
+    return db("users").select('id', 'username', "zaddr", "proofposturl", "website", "twitter", "email", "description", "viewkey").where("username", "ilike", username).first()
 }
 
 function findBy(filter) {
