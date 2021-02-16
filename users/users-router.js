@@ -170,7 +170,7 @@ router.get("/allsubscriptions", restricted, (req,res) => {
 
 router.get(/^\/(.+).json$/, (req, res) => {
     const username = req.params[0];
-    Users.findBy({username})
+    Users.findByUsername(username)
     .then(r => res.status(200).json(r))
     .catch(err => res.status(500).json(err))
 })
@@ -184,7 +184,7 @@ router.get(/^\/(\d+)/, (req, res) => {
 
 router.get(/^\/(.+)/, (req, res) => {
     const username = req.params[0];
-    Users.findBy({username})
+    Users.findByUsername(username)
     .then(r => res.status(200).json(r))
     .catch(err => res.status(500).json(err))
 })

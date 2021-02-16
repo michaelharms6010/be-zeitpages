@@ -20,7 +20,8 @@ module.exports = {
     checkIfCanPublish,
     getLastArticle,
     getUserSubscriptionTotals,
-    getAllPublished
+    getAllPublished,
+    findByUsername
 }
 
 function saveArticle(memo, author_id) {
@@ -148,6 +149,11 @@ async function search(searchString, require_proof, require_twitter){
 function findBy(filter) {
     return db("users").select('id', 'username', "zaddr", "proofposturl", "website", "twitter", "email", "description", "viewkey").where(filter).first()
 }
+
+function findByUsername(username) {
+    return db("users").select('id', 'username', "zaddr", "proofposturl", "website", "twitter", "email", "description", "viewkey").where("username", "ilike", username).first()
+}
+
 function getAll() {
     return db('users').select('id', 'username', "zaddr", "proofposturl", "website", "twitter", "email", "description", "viewkey")
 }
