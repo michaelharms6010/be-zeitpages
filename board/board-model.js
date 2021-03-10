@@ -23,6 +23,13 @@ const twitterCreds = {
   }
 var client = new Twitter(twitterCreds);
 
+
+// TODO: HANDLE POLL MEMOS
+// TODO: HANDLE VOTE MEMOS
+// TODO: JOIN POLL DATA ONTO BOARD POSTS IF AVAILABLE ???
+    // Hits me as a bad idea rn - do another ajax to view poll results?
+
+
 module.exports = {
     getAll,
     getPage,
