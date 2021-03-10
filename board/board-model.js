@@ -6,7 +6,7 @@ const replyRegex = /REPLY::(\d+)/i
 const subscribeRegex = /SUBSCRIBE::(\d+)::(\d+)/i
 const filterRegex = /FILTER::(\w_+)::(\w_+)/i
 const boardRegex = /BOARD::( *)(\w+)/i
-const pollRegex = /POLL::( *)(\w+)( +)1::(\w+)( +)2::(\w+)/i
+const pollRegex = /POLL::( *)([\w .,\/#?!$%\^&\*;:{}=\-_`~()]+)( +)1::(\w+)( +)2::(\w+)/i
 const voteRegex = /VOTE::( *)(\d+)::(\d+)/i
 const zaddrRegex = /zs[a-z0-9]{76}/i;
 const subscribeZaddrRegex = /SUBSCRIBE::(\d+)::zs[a-z0-9]{76}/i
