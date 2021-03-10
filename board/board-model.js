@@ -29,7 +29,8 @@ var client = new Twitter(twitterCreds);
 // TODO: HANDLE POLL MEMOS
 // TODO: HANDLE VOTE MEMOS
 // TODO: JOIN POLL DATA ONTO BOARD POSTS IF AVAILABLE ???
-    // Hits me as a bad idea rn - do another ajax to view poll results?
+    // Hits me as a bad idea rn - better users do another ajax to view poll results?
+// TODO: get poll data endpoint (get this to use localstorage to really impress and be twitteresque)
 
 
 module.exports = {
