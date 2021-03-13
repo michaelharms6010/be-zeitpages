@@ -343,7 +343,7 @@ async function add(post) {
                 let newPostText = []
                 let postTextForTweet = ""
                 let tooLong = false
-                post.memo = post.memo.replace(urlRegex, "<Link>")
+                // post.memo = post.memo.replace(urlRegex, "<Link>")
                 let highlightedString = post.amount >= 10000000 ? "🚨🔥💎🛡💎🔥🚨\n" : ""
                 post.memo = post.memo.replace(/board::([\w_]+)( *)/i, "").replace(/reply::(\d+)( *)/i, "").trim()
                 post.memo.split(" ").forEach(word => {
