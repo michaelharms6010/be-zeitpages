@@ -347,7 +347,7 @@ async function add(post) {
                 let highlightedString = post.amount >= 10000000 ? "🚨🔥💎🛡💎🔥🚨\n" : ""
                 post.memo = post.memo.replace(/board::([\w_]+)( *)/i, "").replace(/reply::(\d+)( *)/i, "").trim()
                 post.memo.split(" ").forEach(word => {
-                    if (word.length + postTextForTweet.length < 210) {
+                    if (word.length + postTextForTweet.length < 210 && !tooLong) {
                         postTextForTweet += word + " "
                         newPostText.push(word)
                     } else {
