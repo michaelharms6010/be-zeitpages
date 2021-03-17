@@ -159,6 +159,7 @@ router.post('/', restricted, (req, res) => {
                     "reply_to": newPost.reply_to_post,
                     "new_post": newPost.id ? true : false,
                     "liked_post_id": newPost.liked_post_id,
+                    "new_amount": newPost.new_amount,
                     "message": "new post"
                 });
             }
