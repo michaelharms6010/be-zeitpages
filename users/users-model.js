@@ -147,15 +147,15 @@ async function search(searchString, require_proof, require_twitter){
 
 
 function findBy(filter) {
-    return db("users").select('id', 'username', "zaddr", "proofposturl", "website", "twitter", "email", "description", "viewkey").where(filter).first()
+    return db("users").select('id', 'username', "zaddr", "proofposturl", "website", "twitter", "email", "description").where(filter).first()
 }
 
 function findByUsername(username) {
-    return db("users").select('id', 'username', "zaddr", "proofposturl", "website", "twitter", "email", "description", "viewkey").where("username", "ilike", username).first()
+    return db("users").select('id', 'username', "zaddr", "proofposturl", "website", "twitter", "email", "description").where("username", "ilike", username).first()
 }
 
 function getAll() {
-    return db('users').select('id', 'username', "zaddr", "proofposturl", "website", "twitter", "email", "description", "viewkey")
+    return db('users').select('id', 'username', "zaddr", "proofposturl", "website", "twitter", "email", "description")
 }
 
 function findById(id) {
