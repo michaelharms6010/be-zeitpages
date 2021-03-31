@@ -1,3 +1,10 @@
+// TODO:
+// By default should return where board_zaddr is null (main board)
+// Optionally return for a specified board (uses viewkey link)
+// get board/key/{viewkey}/page does gets for the specific board
+// gate get by id based on view key
+// gate sub boards to only work for the main board
+
 const { whereNull } = require("../data/db-config.js");
 const db = require("../data/db-config.js");
 const Users = require("../users/users-model")
@@ -22,6 +29,7 @@ const twitterCreds = {
     access_token_secret: process.env.ACCESS_TOKEN_SECRET,
   }
 var client = new Twitter(twitterCreds);
+
 
 module.exports = {
     getAll,
