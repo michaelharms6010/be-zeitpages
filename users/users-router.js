@@ -227,6 +227,9 @@ router.put('/', restricted, (req,res) => {
     if (req.body.referrer) {
         delete req.body.referrer;
     }
+    if (req.body.board_cutoff_date) {
+        delete req.body.board_cutoff_date;
+    }
     Users.updateUser(id, req.body)
     .then( _ => Users.findById(id)).then(user => {
         delete user.password;
