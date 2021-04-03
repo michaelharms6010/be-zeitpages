@@ -129,7 +129,7 @@ async function setReplyCount(id, reply_count) {
 }
 
 function searchPosts(str) {
-    return db("board_posts").where("memo", "ilike", `%${str}%`).limit(25).orderBy("id", "desc")
+    return db("board_posts").where("memo", "ilike", `%${str}%`).limit(50).orderBy("id", "desc")
 }
 
 function getAll() {

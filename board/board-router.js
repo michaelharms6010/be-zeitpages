@@ -121,13 +121,7 @@ router.get("/likecount", (req, res) => {
 })
 
 
-router.get("/:id", (req,res) => {
-    const id = Number(req.params.id);
-    Board.getPage(id).then(posts =>
-        res.status(200).json(posts)
-    )
-    .catch(err => res.status(500).json(err))
-})
+
 
 router.post("/search", (req,res) => {
     const {search} = req.body;
@@ -137,9 +131,17 @@ router.post("/search", (req,res) => {
     .catch(err => res.status(500).json(err))
 })
 
-router.post("/getall", (req,res) => {
+router.get("/getall", (req,res) => {
     Board.getAll().then(results =>
         res.status(200).json(results)
+    )
+    .catch(err => res.status(500).json(err))
+})
+
+router.get("/:id", (req,res) => {
+    const id = Number(req.params.id);
+    Board.getPage(id).then(posts =>
+        res.status(200).json(posts)
     )
     .catch(err => res.status(500).json(err))
 })
