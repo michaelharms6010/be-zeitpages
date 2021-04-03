@@ -137,6 +137,13 @@ router.post("/search", (req,res) => {
     .catch(err => res.status(500).json(err))
 })
 
+router.post("/getall", (req,res) => {
+    Board.getAll().then(results =>
+        res.status(200).json(results)
+    )
+    .catch(err => res.status(500).json(err))
+})
+
 
 
 router.get("/post/:id", (req, res) => {
