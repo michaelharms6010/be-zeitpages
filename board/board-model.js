@@ -28,7 +28,7 @@ const twitterCreds = {
     access_token_key: process.env.ACCESS_TOKEN_KEY,
     access_token_secret: process.env.ACCESS_TOKEN_SECRET,
   }
-var client = new Twitter(twitterCreds);
+var twitterClient = new Twitter(twitterCreds);
 
 
 module.exports = {
@@ -367,9 +367,9 @@ async function add(post) {
                 console.log("first char: ", newPostText[0].charCodeAt(0))
                 if (newPostText[0].charCodeAt(1)) console.log("second char: ", newPostText[0].charCodeAt(1))
                 if (newPostText[0].charCodeAt(2)) console.log("third char: ", newPostText[0].charCodeAt(2))
-                postTextForTweet = `"${highlightedString}${newPostText.join(" ").trim()}${tooLong? "..." : ""}"`
+                postTextForTweet = `${highlightedString}${newPostText.join(" ").trim()}${tooLong? "..." : ""}`
                 const postPreview = postTextForTweet + `\n\nzecpages.com/z/post/${newPost[0].id} #Zcash $ZEC`
-                client.post('statuses/update', {status: postPreview }, function(error, tweets, response) {
+                twitterClient.post('statuses/update', {status: postPreview }, function(error, tweets, response) {
                     console.log(error)
                 if (!error) {
                     console.log("sent tweet")
