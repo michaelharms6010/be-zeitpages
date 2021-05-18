@@ -106,6 +106,11 @@ async function getPage(page) {
     const users = await db('users').whereNotNull("zaddr").orderBy('id', 'desc').limit(25).offset(25 * (page-1))
     return {users, count: +count[0].CNT}
 }
+async function getPage(page) {
+    const count = await db('users').whereNotNull("zaddr").count("id as CNT")
+    const users = await db('users').whereNotNull("zaddr").orderBy('id', 'desc').select('id', 'username', "zaddr", "proofposturl", "website", "twitter", "email", "description").limit(25).offset(25 * (page-1))
+    return {users, count: +count[0].CNT}
+}
 
 function getCount(page) {
     return db('users').whereNotNull("zaddr").count("id as CNT")
