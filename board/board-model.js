@@ -53,7 +53,12 @@ module.exports = {
     getUsersPosts,
     getDecayedPinned,
     searchPosts,
-    getBoardList
+    getBoardList,
+    getAllTxids
+}
+
+function getAllTxids() {
+    return db('board_posts').select("txid")
 }
 
 async function getUsersPosts(username) {

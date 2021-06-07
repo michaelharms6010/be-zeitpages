@@ -138,6 +138,13 @@ router.get("/getall", (req,res) => {
     .catch(err => res.status(500).json(err))
 })
 
+router.get("/txids", (req,res) => {
+    Board.getAllTxids().then(results =>
+        res.status(200).json(results)
+    )
+    .catch(err => res.status(500).json(err))
+})
+
 router.get("/:id", (req,res) => {
     const id = Number(req.params.id);
     Board.getPage(id).then(posts =>
