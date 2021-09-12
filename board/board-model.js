@@ -15,6 +15,8 @@ const filterRegex = /FILTER::(\w_+)::(\w_+)/i
 const boardRegex = /BOARD::( *)(\w+)/i
 const zaddrRegex = /zs[a-z0-9]{76}/i;
 const subscribeZaddrRegex = /SUBSCRIBE::(\d+)::zs[a-z0-9]{76}/i
+const voteRegex = /^VOTE::/i
+const pollRegex = /^POLL::/i
 const splitMemoRegex = /-\d+$/
 const urlRegex = /[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&\\=]*)/ig
 const axios = require("axios")
@@ -278,6 +280,26 @@ async function add(post) {
         return [{subscription: `${subscribedTo}::${subscribedFrom}`}]
     }
 
+    if (post.memo.replace(/ /g, "").match(voteRegex)) {
+        const [meta, txid, option] = post.memo.split("::").map(s => s.replace(/ /g, ""))
+        const poll = await db("board_posts").where({txid}).first()
+        if (poll) {
+
+            const newVote = {
+                poll_id: poll.id,
+                poll_txid: txid,
+                option
+            }
+            await db("votes").insert(newVote)
+            
+            return [newVote]
+        } else {
+            console.log(post.memo)
+            return [{message: 'vote failed.'}]
+        }
+
+    }
+
     if (post.memo.match(filterRegex)) {
         const filteredFrom = post.memo.match(filterRegex)[0].split("::")[1]
         const filteredTo = post.memo.match(filterRegex)[0].split("::")[2]
@@ -308,6 +330,10 @@ async function add(post) {
                 await db('board_posts').where({id: replyId}).update({reply_count: repliedPost.reply_count + 1})
             }
             post.reply_to_post = replyId;
+        }
+
+        if (post.memo.match(pollRegex)) {
+            post.ispoll=true
         }
 
         if (post.memo.match(boardRegex)) {
