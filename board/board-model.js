@@ -334,6 +334,11 @@ async function add(post) {
 
         if (post.memo.match(pollRegex)) {
             post.ispoll=true
+            try {
+                JSON.parse(post.memo.replace(/poll::/ig, ""))
+            } catch(e) {
+                return ["Invalid poll"]
+            }
         }
 
         if (post.memo.match(boardRegex)) {
