@@ -15,15 +15,19 @@ async function getPollResults(poll_id) {
 
         const votes = await getPollVotes(poll_id)
         const pollEntry = await db("board_posts").where({id: poll_id}).first()
+        console.log("PollEntry", pollEntry)
         const poll = JSON.parse(pollEntry.memo.replace("POLL::", ""))
+        console.log("poll", poll)
         const results = {}
         results.q = poll.q
-        [1,2,3,4].forEach(n => {
-            let option = poll[`o${n}`];
+        for (let i = 1; i < 5; i++)
+
+            let option = poll[`o${i}`];
+            
             if (option) {
-                results[option] = votes.filter(v => v.option == n).length
+                results[option] = votes.filter(v => v.option == i).length
             }
-        })
+        
         
         return results
     } catch (e) {
