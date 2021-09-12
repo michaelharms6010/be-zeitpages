@@ -24,6 +24,7 @@ const dataLimiter = rateLimit({
 const usersRouter = require("./users/users-router.js")
 const authRouter = require("./auth/auth-router.js");
 const boardRouter = require("./board/board-router.js");
+const pollRouter = require("./polls/polls-router")
 
 const server = express();
 
@@ -35,6 +36,7 @@ server.use(morgan("dev"));
 server.use("/users", dataLimiter, usersRouter);
 server.use("/auth", authLimiter, authRouter);
 server.use("/board", dataLimiter, boardRouter);
+server.use("/poll", dataLimiter, pollRouter);
 
 generateFeed();
 setInterval(_ => generateFeed(), (1000 * 60 * 5))
