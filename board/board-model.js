@@ -199,6 +199,17 @@ async function add(post) {
             post.memo = post.memo.replace(post.memo.split(" ")[0], decodedReplyTag)
         }
 
+        const decodedVote = Buffer.from(post.memo, "base64").toString("utf8")
+        if (voteRegex.test(decodedVote)) {
+            post.memo = decodedVote
+        } 
+        const decodedPoll = Buffer.from(post.memo, "base64").toString("utf8")
+        if (pollRegex.test(decodedPoll)) {
+            post.memo = decodedPoll
+        } 
+
+
+
         
         
     } catch (err) {
