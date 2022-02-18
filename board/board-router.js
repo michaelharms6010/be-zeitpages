@@ -5,6 +5,15 @@ var Pusher = require('pusher');
 const db = require('../data/db-config');
 const zaddrRegex = /zs[a-z0-9]{76}/i;
 const generateFeed = require("../generateFeed.js");
+
+const boardZaddr = "zs1j29m7zdhhyy2eqrz89l4zhk0angqjh368gqkj2vgdyqmeuultteny36n3qsm47zn8du5sw3ts7f"
+
+const prices = {
+    post: .001,
+    tweet: .01,
+    highlight: .1
+}
+
 var pusher = new Pusher({
     appId: process.env.PUSHER_APPID,
     key: process.env.PUSHER_KEY,
@@ -143,6 +152,10 @@ router.get("/txids", (req,res) => {
         res.status(200).json(results)
     )
     .catch(err => res.status(500).json(err))
+})
+
+router.get("/params", (req,res) => {
+    res.status(200).json({zaddr: boardZaddr, prices})
 })
 
 router.get("/:id", (req,res) => {
