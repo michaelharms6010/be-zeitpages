@@ -14,6 +14,7 @@ const subscribeRegex = /SUBSCRIBE::(\d+)::(\d+)/i
 const filterRegex = /FILTER::(\w_+)::(\w_+)/i
 const boardRegex = /BOARD::( *)(\w+)/i
 const zaddrRegex = /zs[a-z0-9]{76}/i;
+const uaddrRegex = /u1\w{211}/
 const subscribeZaddrRegex = /SUBSCRIBE::(\d+)::zs[a-z0-9]{76}/i
 const voteRegex = /^VOTE::/i
 const pollRegex = /^POLL::/i
@@ -329,7 +330,7 @@ async function add(post) {
         await db('board_posts').where({id: postId}).update({amount: likedPost.amount + post.amount, likes: likedPost.likes + 1})
         return [{new_amount: likedPost.amount + post.amount, liked_post_id: Number(postId)}]
     } else {
-        if (post.memo.match(zaddrRegex)) {
+        if (post.memo.match(zaddrRegex) || post.memo.match(uaddrRegex)) {
             const replyZaddr = post.memo.match(zaddrRegex)[0];
             post.reply_zaddr = replyZaddr;
         }
