@@ -4,6 +4,7 @@ const restricted = require("../auth/restricted-middleware");
 const validator = require('password-validator');
 const axios = require('axios');
 const zaddrRegex = /^zs[a-z0-9]{76}$/;
+const uaddrRegex = /u1\w{211}/
 const ADMIN_IDS = [2]
 const db = require("../data/db-config")
 
@@ -210,8 +211,8 @@ router.put('/', restricted, (req,res) => {
     }
 
     if(zaddr){
-        if (!zaddrRegex.test(zaddr)){
-            res.status(500).json({
+        if (!zaddrRegex.test(zaddr) && !uaddrRegex.test(zaddr)){
+            res.status(400).json({
             message: 'Your zaddr is invalid.'
             })
             return;
